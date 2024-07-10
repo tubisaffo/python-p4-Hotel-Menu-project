@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Navbar from './Navbar'; // Assuming Navbar.js is in the same directory
-import MenuTable from '../pages/MenuTable'; // Assuming MenuTable.js is in src/pages
-import OrderList from '../pages/OrderList'; // Assuming OrderList.js is in src/pages
+import Navbar from './NavBar'; // Corrected import path
+
+import MenuTable from '../pages/MenuTable';
+import OrderList from '../pages/OrderList';
 
 const App = () => {
   return (
     <Router>
       <div>
-        <Navbar />
-
+        <Navbar /> {/* Ensure Navbar component is correctly imported and used */}
+        
         {/* Define your routes */}
         <Switch>
           <Route path="/" exact component={MenuTable} />
