@@ -1,90 +1,103 @@
 import React, { useState, useEffect } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const MenuTable = () => {
   const [menuItems, setMenuItems] = useState([]);
-  const [newItemName, setNewItemName] = useState('');
-  const [newItemPrice, setNewItemPrice] = useState('');
-  const [newItemDescription, setNewItemDescription] = useState('');
-  const [newItemImage, setNewItemImage] = useState(''); // New state for item image URL
 
   useEffect(() => {
-    // Example fetch request to fetch menu items from API
+    
     fetch('/api/menu')
       .then(response => response.json())
       .then(data => setMenuItems(data))
       .catch(error => console.error('Error fetching menu items:', error));
   }, []);
 
-  const handleAddItem = () => {
-    // Example: Assuming menu items are added via a form or another interaction
+  const handleAddItem = (values, { resetForm }) => {
     const newItem = {
-      id: menuItems.length + 1, // Example: Assign a new ID
-      name: newItemName,
-      price: parseFloat(newItemPrice),
-      description: newItemDescription,
-      image: newItemImage, // Include image URL in new item
+      id: menuItems.length + 1,
+      name: values.newItemName,
+      price: parseFloat(values.newItemPrice),
+      description: values.newItemDescription,
+      image: values.newItemImage,
     };
 
     setMenuItems([...menuItems, newItem]);
-    // Normally, you would send a POST request to your API to add the new item
 
-    // Clear form fields after adding item
-    setNewItemName('');
-    setNewItemPrice('');
-    setNewItemDescription('');
-    setNewItemImage('');
+
+    resetForm();
   };
 
   const handleDeleteItem = (itemId) => {
-    // Filter out the menu item with the specified ID
     const updatedItems = menuItems.filter(item => item.id !== itemId);
     setMenuItems(updatedItems);
-    // Normally, you would send a DELETE request to your API to delete the item
+    //  DELETE request to API to delete the item
   };
 
   return (
     <div className="menu-table">
       <h1 className="menu-header">Menu Table</h1>
 
-      <form onSubmit={(e) => { e.preventDefault(); handleAddItem(); }}>
-        <label>
-          Name:
-          <input
-            type="text"
-            value={newItemName}
-            onChange={(e) => setNewItemName(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Price:
-          <input
-            type="number"
-            value={newItemPrice}
-            onChange={(e) => setNewItemPrice(e.target.value)}
-            step="0.01"
-            required
-          />
-        </label>
-        <label>
-          Description:
-          <input
-            type="text"
-            value={newItemDescription}
-            onChange={(e) => setNewItemDescription(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Image URL:
-          <input
-            type="text"
-            value={newItemImage}
-            onChange={(e) => setNewItemImage(e.target.value)}
-          />
-        </label>
-        <button type="submit" className="add-button">Add Item</button>
-      </form>
+      <Formik
+        initialValues={{
+          newItemName: '',
+          newItemPrice: '',
+          newItemDescription: '',
+          newItemImage: '',
+        }}
+        validate={values => {
+          const errors = {};
+          
+          if (!values.newItemName) {
+            errors.newItemName = 'Required';
+          }
+          if (!values.newItemPrice) {
+            errors.newItemPrice = 'Required';
+          }
+          return errors;
+        }}
+        onSubmit={handleAddItem}
+      >
+        {({ errors }) => (
+          <Form>
+            <label htmlFor="newItemName">Name:</label>
+            <Field
+              type="text"
+              id="newItemName"
+              name="newItemName"
+              required
+            />
+            <ErrorMessage name="newItemName" component="div" />
+
+            <label htmlFor="newItemPrice">Price:</label>
+            <Field
+              type="number"
+              id="newItemPrice"
+              name="newItemPrice"
+              step="0.01"
+              required
+            />
+            <ErrorMessage name="newItemPrice" component="div" />
+
+            <label htmlFor="newItemDescription">Description:</label>
+            <Field
+              type="text"
+              id="newItemDescription"
+              name="newItemDescription"
+              required
+            />
+            <ErrorMessage name="newItemDescription" component="div" />
+
+            <label htmlFor="newItemImage">Image URL:</label>
+            <Field
+              type="text"
+              id="newItemImage"
+              name="newItemImage"
+            />
+
+            <button type="submit" className="add-button">Add Item</button>
+          </Form>
+        )}
+      </Formik>
 
       <table className="table">
         <thead>
@@ -93,7 +106,7 @@ const MenuTable = () => {
             <th>Name</th>
             <th>Price</th>
             <th>Description</th>
-            <th>Image</th> 
+            <th>Image</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -121,6 +134,8 @@ const MenuTable = () => {
 };
 
 export default MenuTable;
+
+
 
 
 
