@@ -1,5 +1,10 @@
-from app import app
-from models import db, User, MenuItem, Order, OrderItem
+from config import db
+from models import User, MenuItem
 
-with app.app_context():
-    db.create_all()
+db.create_all()
+
+admin = User(username='admin', password='admin', role='admin')
+staff = User(username='staff', password='staff', role='staff')
+db.session.add(admin)
+db.session.add(staff)
+db.session.commit()
