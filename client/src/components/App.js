@@ -1,18 +1,27 @@
 import React from 'react';
-import NavBar from './NavBar'; // Corrected path to import NavBar correctly
-import OrderList from '../pages/OrderList'; // Corrected path to import OrderList correctly
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Navbar from './Navbar'; // Assuming Navbar.js is in the same directory
+import MenuTable from '../pages/MenuTable'; // Assuming MenuTable.js is in src/pages
+import OrderList from '../pages/OrderList'; // Assuming OrderList.js is in src/pages
 
 const App = () => {
   return (
-    <div>
-      <NavBar />
-      <h1>My Restaurant Orders</h1>
-      <OrderList />
-    </div>
+    <Router>
+      <div>
+        <Navbar />
+
+        {/* Define your routes */}
+        <Switch>
+          <Route path="/" exact component={MenuTable} />
+          <Route path="/orders" component={OrderList} />
+        </Switch>
+      </div>
+    </Router>
   );
 };
 
 export default App;
+
 
 
 
