@@ -32,6 +32,6 @@ def orders():
     orders = Order.query.all()
     return jsonify([order._dict_ for order in orders]), 200
 
-if _name_ == '_main_':
+if __name__== '_main_':
     app.run(debug=True)
 
