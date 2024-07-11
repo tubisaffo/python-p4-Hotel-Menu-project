@@ -6,6 +6,7 @@ import SideForm from './SideForm';
 const MainPage = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const history = useHistory();
 
   useEffect(() => {
@@ -42,12 +43,26 @@ const MainPage = () => {
     history.push('/orders', { cartItems });
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredMenuItems = menuItems.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
       <Navbar />
       <h1>Hotel Menu</h1>
+      <input
+        type="text"
+        placeholder="Search for food..."
+        value={searchQuery}
+        onChange={handleSearchChange}
+      />
       <div className="menu-list">
-        {menuItems.map(item => (
+        {filteredMenuItems.map(item => (
           <div key={item.id} className="menu-item card">
             <img src={item.image} alt={item.name} className="food-image" />
             <h3>{item.name}</h3>

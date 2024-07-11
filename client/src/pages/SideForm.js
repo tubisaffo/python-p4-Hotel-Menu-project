@@ -2,7 +2,7 @@ import React from 'react';
 
 const SideForm = ({ chosenItems, placeOrder }) => {
   return (
-    <div className="side-form">
+    <div>
       <h3>Chosen Items</h3>
       <ul>
         {chosenItems.map(item => (
