@@ -16,7 +16,7 @@ const OrderList = () => {
   return (
     <div>
       <h1>Orders List</h1>
-      {/* Display orders */}
+
       <ul>
         {orders.map(order => (
           <li key={order.id}>
