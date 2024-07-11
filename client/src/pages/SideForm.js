@@ -6,7 +6,10 @@ const SideForm = ({ chosenItems, placeOrder }) => {
       <h3>Chosen Items</h3>
       <ul>
         {chosenItems.map(item => (
-          <li key={item.id}>{item.name}</li>
+          <li key={item.id}>
+            <img src={item.image} alt={item.name} className="food-image" />
+            <p>{item.name} - Quantity: {item.quantity} - Price: ${item.price}</p>
+          </li>
         ))}
       </ul>
       <button onClick={placeOrder}>Place Order</button>
