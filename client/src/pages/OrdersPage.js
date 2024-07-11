@@ -4,8 +4,8 @@ import Navbar from '../components/Navbar';
 const OrdersPage = () => {
   const location = useLocation();
   const cartItems = location.state ? location.state.cartItems : [];
-  const customerNumber = Math.floor(1000 + Math.random() * 9000); // Generate a random customer number
-  const timeOfOrder = new Date().toLocaleString(); // Get current time
+  const customerNumber = Math.floor(1000 + Math.random() * 9000); 
+  const timeOfOrder = new Date().toLocaleString(); 
 
   return (
     <div>
