@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
 import { useHistory } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import SideForm from './SideForm';
@@ -9,11 +8,6 @@ const MainPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const history = useHistory();
-=======
-
-const MainPage = () => {
-  const [menuItems, setMenuItems] = useState([]);
->>>>>>> main
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -23,11 +17,7 @@ const MainPage = () => {
           throw new Error('Failed to fetch menu items');
         }
         const data = await response.json();
-<<<<<<< HEAD
         setMenuItems(data);
-=======
-        setMenuItems(data); 
->>>>>>> main
       } catch (error) {
         console.error('Error fetching menu items:', error);
       }
@@ -35,7 +25,6 @@ const MainPage = () => {
 
     fetchMenuItems();
   }, []);
-<<<<<<< HEAD
 
   const addToCart = (item) => {
     const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
@@ -87,23 +76,5 @@ const MainPage = () => {
     </div>
   );
 };
-=======
-  return (
-    <div>
-      <h1>Main Page - Menu</h1>
-      <div className="menu-list">
-        {menuItems.map(item => (
-          <div key={item.id} className="menu-item">
-            <h3>{item.name}</h3>
-            <p>{item.description}</p>
-            <p>Price: ${item.price}</p>
-            {/* Add 'Add to Cart' button or functionality here */}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
->>>>>>> main
 
 export default MainPage;
