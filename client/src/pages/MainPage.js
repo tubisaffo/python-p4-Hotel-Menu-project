@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import Navbar from '../components/Navbar'; 
+import Navbar from '../components/Navbar';
+import SideForm from './SideForm';
 
 const MainPage = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -25,7 +26,16 @@ const MainPage = () => {
   }, []);
 
   const addToCart = (item) => {
-    setCartItems([...cartItems, item]);
+    const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
+    if (existingItem) {
+      setCartItems(cartItems.map(cartItem => 
+        cartItem.id === item.id 
+          ? { ...cartItem, quantity: cartItem.quantity + 1 } 
+          : cartItem
+      ));
+    } else {
+      setCartItems([...cartItems, { ...item, quantity: 1 }]);
+    }
   };
 
   const placeOrder = () => {
@@ -34,11 +44,12 @@ const MainPage = () => {
 
   return (
     <div>
-      <Navbar /> 
+      <Navbar />
       <h1>Hotel Menu</h1>
-      <div className="menu-list" style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <div className="menu-list">
         {menuItems.map(item => (
-          <div key={item.id} className="menu-item">
+          <div key={item.id} className="menu-item card">
+            <img src={item.image} alt={item.name} className="food-image" />
             <h3>{item.name}</h3>
             <p>{item.description}</p>
             <p>Price: ${item.price}</p>
@@ -46,25 +57,7 @@ const MainPage = () => {
           </div>
         ))}
       </div>
-      <div className="cart">
-        <h2>Cart</h2>
-        {cartItems.length > 0 ? (
-          <ul>
-            {cartItems.map((item, index) => (
-              <li key={index}>
-                {item.name} - ${item.price}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No items in cart</p>
-        )}
-        {cartItems.length > 0 && (
-          <button onClick={placeOrder}>
-            Place Order
-          </button>
-        )}
-      </div>
+      <SideForm chosenItems={cartItems} placeOrder={placeOrder} />
     </div>
   );
 };
