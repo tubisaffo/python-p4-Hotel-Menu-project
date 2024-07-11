@@ -17,6 +17,10 @@ const SideForm = ({ chosenItems, placeOrder }) => {
       {chosenItems.length > 0 && (
         <button onClick={placeOrder}>Place Order</button>
       )}
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
+      <button onClick={placeOrder}>Place Order</button>
     </div>
   );
 }
