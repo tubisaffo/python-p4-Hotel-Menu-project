@@ -19,13 +19,13 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/order-list" className={window.location.pathname === '/order-list' ? 'active' : ''}>
-            Order List
+          <Link to="/menu-list" className={window.location.pathname === '/menu-list' ? 'active' : ''}>
+            Menu List
           </Link>
         </li>
         <li>
-          <Link to="/menu-list" className={window.location.pathname === '/menu-list' ? 'active' : ''}>
-            Menu List
+          <Link to="/order-list" className={window.location.pathname === '/order-list' ? 'active' : ''}>
+            Order List
           </Link>
         </li>
         <li>
@@ -39,6 +39,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 
 

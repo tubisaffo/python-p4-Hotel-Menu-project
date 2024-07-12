@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 const OrderList = () => {
-  // Example: State to store orders
+  // State to store orders
   const [orders, setOrders] = useState([]);
 
-  // Example: Fetch orders from API or database
+  // Fetch orders from API or database
   useEffect(() => {
     // Example fetch request
     fetch('/api/orders')
@@ -17,16 +17,29 @@ const OrderList = () => {
     <div>
       <h1>Orders List</h1>
 
-      <ul>
-        {orders.map(order => (
-          <li key={order.id}>
-            {order.id} - {order.description}
-          </li>
-        ))}
-      </ul>
+      <table className="order-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Description</th>
+            {/* Add more table headers as needed */}
+          </tr>
+        </thead>
+        <tbody>
+          {orders.map(order => (
+            <tr key={order.id}>
+              <td>{order.id}</td>
+              <td>{order.description}</td>
+              {/* Add more table cells for additional order details */}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
 export default OrderList;
+
+
 
