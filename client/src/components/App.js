@@ -8,6 +8,7 @@ import OrderList from '../pages/OrderList';
 import LoginPage from '../pages/LoginPage';
 import MainPage from '../pages/MainPage';
 import OrdersPage from '../pages/OrdersPage';
+import MenuList from '../pages/MenuList'; // Import the MenuList component
 
 const App = () => {
   return (
@@ -33,6 +34,12 @@ const App = () => {
               <OrderList />
             </div>
           </Route>
+          <Route path="/menu-list">
+            <div>
+              <Navbar />
+              <MenuList />
+            </div>
+          </Route>
         </Switch>
       </div>
     </Router>
@@ -42,7 +49,6 @@ const App = () => {
 // Define MainPageWithNavbar component with Navbar
 const MainPageWithNavbar = () => (
   <div>
-    {/* Render MainPage content without Navbar */}
     <MainPage />
   </div>
 );
@@ -53,3 +59,5 @@ const OrdersPageWithoutNavbar = () => (
 );
 
 export default App;
+
+

@@ -24,6 +24,11 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
+          <Link to="/menu-list" className={window.location.pathname === '/menu-list' ? 'active' : ''}>
+            Menu List
+          </Link>
+        </li>
+        <li>
           <button onClick={handleLogout} className="logout-button">
             Logout
           </button>
@@ -34,6 +39,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 
 
