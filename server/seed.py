@@ -1,10 +1,10 @@
+
 #!/usr/bin/env python3
 
 # Standard library imports
 from random import randint, choice as rc
 
 # Remote library imports
-#!/usr/bin/env python3
 
 from faker import Faker
 from app import app
@@ -83,3 +83,4 @@ with app.app_context():
     db.session.commit()
 
     print("Seeding done!")
+
