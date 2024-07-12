@@ -53,4 +53,3 @@ const OrdersPageWithoutNavbar = () => (
 );
 
 export default App;
-

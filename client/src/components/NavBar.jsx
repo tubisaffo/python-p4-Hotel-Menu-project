@@ -1,22 +1,32 @@
-// src/components/NavBar.js
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom'; // Import useLocation to get current path
+import { Link, useHistory } from 'react-router-dom'; // Import useHistory to navigate programmatically
 
 const Navbar = () => {
-  const location = useLocation(); // Get current location
+  const history = useHistory(); // Get history object for programmatic navigation
+
+  const handleLogout = () => {
+    // Perform logout actions if needed (e.g., clear session, tokens, etc.)
+    // Then navigate to the login page
+    history.push('/'); // Redirect to login page
+  };
 
   return (
     <nav>
       <ul>
         <li>
-          <Link to="/menu" className={location.pathname === '/menu' ? 'active' : ''}>
+          <Link to="/menu" className={window.location.pathname === '/menu' ? 'active' : ''}>
             Menu
           </Link>
         </li>
         <li>
-          <Link to="/order-list" className={location.pathname === '/order-list' ? 'active' : ''}>
+          <Link to="/order-list" className={window.location.pathname === '/order-list' ? 'active' : ''}>
             Order List
           </Link>
+        </li>
+        <li>
+          <button onClick={handleLogout} className="logout-button">
+            Logout
+          </button>
         </li>
       </ul>
     </nav>
@@ -24,6 +34,8 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
 
 
 
