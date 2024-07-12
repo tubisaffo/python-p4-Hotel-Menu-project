@@ -4,4 +4,86 @@
   --link: #61dafb;
   --text: hsla(0, 0%, 100%, 0.88);
 }
+/* MenuTable.css */
+
+.menu-table {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.menu-header {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px; 
+  color: black;
+}
+
+form {
+  margin-bottom: 20px; 
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+form label {
+  flex: 1 1 100%; /* Take full width of the form */
+  display: block;
+  margin-bottom: 10px;
+}
+
+form input {
+  width: 100%; /* Full width input fields */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+
+.table {
+  width: 100%;
+  border-collapse: collapse; 
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: orangered;
+}
+
+.table td {
+  vertical-align: top; 
+}
+
+.table td:last-child {
+  text-align: center; 
+}
+
+.delete-button {
+  background-color: #f44336; 
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
 
