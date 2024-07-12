@@ -1,3 +1,4 @@
+// src/components/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './NavBar'; // Ensure the correct import path
@@ -12,18 +13,44 @@ const App = () => {
   return (
     <Router>
       <div>
-        <Navbar /> {/* Ensure Navbar component is correctly imported and used */}
-        
         <Switch>
           <Route exact path="/" component={LoginPage} />
-          <Route path="/main" component={MainPage} />
-          <Route path="/orders" component={OrdersPage} />
-          <Route path="/menu" component={MenuTable} />
-          <Route path="/order-list" component={OrderList} />
+          <Route path="/main">
+            <MainPageWithNavbar />
+          </Route>
+          <Route path="/orders">
+            <OrdersPageWithoutNavbar />
+          </Route>
+          <Route path="/menu">
+            <div>
+              <Navbar />
+              <MenuTable />
+            </div>
+          </Route>
+          <Route path="/order-list">
+            <div>
+              <Navbar />
+              <OrderList />
+            </div>
+          </Route>
         </Switch>
       </div>
     </Router>
   );
 };
 
+// Define MainPageWithNavbar component with Navbar
+const MainPageWithNavbar = () => (
+  <div>
+    {/* Render MainPage content without Navbar */}
+    <MainPage />
+  </div>
+);
+
+// Define OrdersPageWithoutNavbar component without Navbar
+const OrdersPageWithoutNavbar = () => (
+  <OrdersPage />
+);
+
 export default App;
+
