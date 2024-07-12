@@ -1,19 +1,29 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import LoginPage from '../pages/LoginPage';   // Adjusted path to LoginPage
-import MainPage from '../pages/MainPage';     // Adjusted path to MainPage
-import OrdersPage from '../pages/OrdersPage'; // Adjusted path to OrdersPage
+import Navbar from './NavBar'; // Ensure the correct import path
 
-function App() {
+import MenuTable from '../pages/MenuTable';
+import OrderList from '../pages/OrderList';
+import LoginPage from '../pages/LoginPage';
+import MainPage from '../pages/MainPage';
+import OrdersPage from '../pages/OrdersPage';
+
+const App = () => {
   return (
     <Router>
-      <Switch>
-        <Route exact path="/" component={LoginPage} />
-        <Route path="/main" component={MainPage} />
-        <Route path="/orders" component={OrdersPage} />
-      </Switch>
+      <div>
+        <Navbar /> {/* Ensure Navbar component is correctly imported and used */}
+        
+        <Switch>
+          <Route exact path="/" component={LoginPage} />
+          <Route path="/main" component={MainPage} />
+          <Route path="/orders" component={OrdersPage} />
+          <Route path="/menu" component={MenuTable} />
+          <Route path="/order-list" component={OrderList} />
+        </Switch>
+      </div>
     </Router>
   );
-}
+};
 
 export default App;
