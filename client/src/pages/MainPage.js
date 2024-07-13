@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
-
-export default function Home() {
-  const [menuitems, setMenuItems] = useState([]);
-=======
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -16,7 +8,6 @@ const MainPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const history = useHistory();
->>>>>>> Davey
 
   useEffect(() => {
     fetch("/menu")
@@ -24,35 +15,6 @@ const MainPage = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch menu items");
         }
-<<<<<<< HEAD
-        return response.json();
-      })
-      .then(setMenuItems)
-      .catch((error) => {
-        console.error("Error fetching menu items:", error);
-      });
-  }, []);
-
-  function handleOrder(id) {
-    fetch(`/orders/${id}`, {
-      method: "POST",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to place order");
-        }
-        return response.json();
-      })
-      .then(() => {
-        setMenuItems((menuitems) =>
-          menuitems.filter((menuitem) => menuitem.id !== id)
-        );
-      })
-      .catch((error) => {
-        console.error("Error placing order:", error);
-      });
-  }
-=======
         const data = await response.json();
         setMenuItems(data);
       } catch (error) {
@@ -87,45 +49,24 @@ const MainPage = () => {
   const filteredMenuItems = menuItems.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
->>>>>>> Davey
 
   return (
     <div>
       <Navbar />
       <h1>Hotel Menu</h1>
-<<<<<<< HEAD
-      {/* <input
-=======
       <input
->>>>>>> Davey
         type="text"
         placeholder="Search for food..."
         value={searchQuery}
         onChange={handleSearchChange}
-<<<<<<< HEAD
-      /> */}
-      <div className="menu-list">
-        {menuitems.map((item) => (
-=======
       />
       <div className="menu-list">
         {filteredMenuItems.map(item => (
->>>>>>> Davey
           <div key={item.id} className="menu-item card">
             <img src={item.image} alt={item.name} className="food-image" />
             <h3>{item.name}</h3>
             <p>{item.description}</p>
             <p>Price: ${item.price}</p>
-<<<<<<< HEAD
-            <button onClick={() => handleOrder(item)}>Order</button>
-          </div>
-        ))}
-      </div>
-      {/* <SideForm chosenItems={cartItems} placeOrder={placeOrder} /> */}
-    </div>
-  );
-}
-=======
             <button onClick={() => addToCart(item)}>Add to Cart</button>
           </div>
         ))}
@@ -136,4 +77,3 @@ const MainPage = () => {
 };
 
 export default MainPage;
->>>>>>> Davey
