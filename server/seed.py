@@ -37,33 +37,33 @@ with app.app_context():
 
     # Predefined lists of food items
     drinks = [
-        {"name": "Coca Cola", "description": "Chilled and refreshing cola drink"},
-        {"name": "Orange Juice", "description": "Freshly squeezed orange juice"},
-        {"name": "Coffee", "description": "Hot brewed coffee with a rich aroma"},
-        {"name": "Tea", "description": "Hot tea with a hint of lemon"},
-        {"name": "Smoothie", "description": "Mixed fruit smoothie with yogurt"}
+        {"name": "Coca Cola", "description": "Chilled and refreshing cola drink", "price": 1.99, "image": "https://en.wikipedia.org/wiki/Soft_drink#/media/File:Tumbler_of_cola_with_ice.jpg"},
+        {"name": "Orange Juice", "description": "Freshly squeezed orange juice", "price": 2.49, "image": "https://en.wikipedia.org/wiki/Orange_juice#/media/File:Orange_juice.jpg"},
+        {"name": "Coffee", "description": "Hot brewed coffee with a rich aroma", "price": 1.99, "image": "https://en.wikipedia.org/wiki/Coffee#/media/File:Coffee_with_ice.jpg"},
+        {"name": "Tea", "description": "Hot tea with a hint of lemon", "price": 1.99, "image": "https://en.wikipedia.org/wiki/Tea#/media/File:Tea_with_ice.jpg"},
+        {"name": "Smoothie", "description": "Mixed fruit smoothie with yogurt", "price": 2.49, "image": "https://en.wikipedia.org/wiki/Smoothie#/media/File:Smoothie_with_ice.jpg"}
     ]
 
     breakfast_items = [
-        {"name": "Pancakes", "description": "Fluffy pancakes served with syrup"},
-        {"name": "Omelette", "description": "Cheese and vegetable omelette"},
-        {"name": "French Toast", "description": "French toast topped with powdered sugar"},
-        {"name": "Bagel", "description": "Freshly baked bagel with cream cheese"},
-        {"name": "Yogurt Parfait", "description": "Layers of yogurt, granola, and fruit"}
+        {"name": "Pancakes", "description": "Fluffy pancakes served with syrup", "price": 4.99, "image": "https://en.wikipedia.org/wiki/Pancake#/media/File:Pancake_with_ice.jpg"},
+        {"name": "Omelette", "description": "Cheese and vegetable omelette", "price": 3.99, "image": "https://en.wikipedia.org/wiki/Omelette#/media/File:Omelette_with_ice.jpg"},
+        {"name": "French Toast", "description": "French toast topped with powdered sugar","price": 2.99, "image": "https://en.wikipedia.org/wiki/French_toast#/media/File:French_toast_with_ice.jpg"},
+        {"name": "Bagel", "description": "Freshly baked bagel with cream cheese", "price": 1.99, "image": "https://en.wikipedia.org/wiki/Bagel#/media/File:Bagel_with_ice.jpg"},
+        {"name": "Yogurt Parfait", "description": "Layers of yogurt, granola, and fruit", "price": 2.49, "image": "https://en.wikipedia.org/wiki/Yogurt#/media/File:Yogurt_parfait_with_ice.jpg"}
     ]
 
     lunch_items = [
-        {"name": "Burger", "description": "Juicy beef burger with lettuce and tomato"},
-        {"name": "Caesar Salad", "description": "Crispy romaine with Caesar dressing"},
-        {"name": "Grilled Chicken Sandwich", "description": "Grilled chicken on a toasted bun"},
-        {"name": "Tacos", "description": "Soft tacos with beef and fresh toppings"},
-        {"name": "Pizza", "description": "Cheese pizza with a crispy crust"}
+        {"name": "Burger", "description": "Juicy beef burger with lettuce and tomato", "price": 4.99, "image": "https://en.wikipedia.org/wiki/Burger#/media/File:Burger_with_ice.jpg"},
+        {"name": "Caesar Salad", "description": "Crispy romaine with Caesar dressing", "price": 3.99, "image": "https://en.wikipedia.org/wiki/Caesar_salad#/media/File:Caesar_salad_with_ice.jpg"},
+        {"name": "Grilled Chicken Sandwich", "description": "Grilled chicken on a toasted bun", "price": 3.49, "image": "https://en.wikipedia.org/wiki/Grilled_chicken#/media/File:Grilled_chicken_sandwich_with_ice.jpg"},
+        {"name": "Tacos", "description": "Soft tacos with beef and fresh toppings", "price": 2.99, "image": "https://en.wikipedia.org/wiki/Taco#/media/File:Taco_with_ice.jpg"},
+        {"name": "Pizza", "description": "Cheese pizza with a crispy crust", "price": 4.49, "image": "https://en.wikipedia.org/wiki/Pizza#/media/File:Pizza_with_ice.jpg"}
     ]
 
     # Add predefined items to the menu_items list
     for item in drinks + breakfast_items + lunch_items:
         price = round(fake.random_number(digits=2, fix_len=False) + fake.random.random(), 2)
-        menu_items.append(MenuItem(name=item["name"], description=item["description"], price=price))
+        menu_items.append(MenuItem(name=item["name"], description=item["description"], price=price, image=item["image"]))
 
     db.session.add_all(menu_items)
     db.session.commit()

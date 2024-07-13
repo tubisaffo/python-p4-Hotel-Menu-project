@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useState, useEffect } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 const MenuTable = () => {
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    
-    fetch('/api/menu')
-      .then(response => response.json())
-      .then(data => setMenuItems(data))
-      .catch(error => console.error('Error fetching menu items:', error));
+    fetch("/menu")
+      .then((response) => response.json())
+      .then((data) => setMenuItems(data))
+      .catch((error) => console.error("Error fetching menu items:", error));
   }, []);
 
   const handleAddItem = (values, { resetForm }) => {
@@ -23,12 +22,11 @@ const MenuTable = () => {
 
     setMenuItems([...menuItems, newItem]);
 
-
     resetForm();
   };
 
   const handleDeleteItem = (itemId) => {
-    const updatedItems = menuItems.filter(item => item.id !== itemId);
+    const updatedItems = menuItems.filter((item) => item.id !== itemId);
     setMenuItems(updatedItems);
     //  DELETE request to API to delete the item
   };
@@ -39,19 +37,19 @@ const MenuTable = () => {
 
       <Formik
         initialValues={{
-          newItemName: '',
-          newItemPrice: '',
-          newItemDescription: '',
-          newItemImage: '',
+          newItemName: "",
+          newItemPrice: "",
+          newItemDescription: "",
+          newItemImage: "",
         }}
-        validate={values => {
+        validate={(values) => {
           const errors = {};
-          
+
           if (!values.newItemName) {
-            errors.newItemName = 'Required';
+            errors.newItemName = "Required";
           }
           if (!values.newItemPrice) {
-            errors.newItemPrice = 'Required';
+            errors.newItemPrice = "Required";
           }
           return errors;
         }}
@@ -60,12 +58,7 @@ const MenuTable = () => {
         {({ errors }) => (
           <Form>
             <label htmlFor="newItemName">Name:</label>
-            <Field
-              type="text"
-              id="newItemName"
-              name="newItemName"
-              required
-            />
+            <Field type="text" id="newItemName" name="newItemName" required />
             <ErrorMessage name="newItemName" component="div" />
 
             <label htmlFor="newItemPrice">Price:</label>
@@ -88,13 +81,11 @@ const MenuTable = () => {
             <ErrorMessage name="newItemDescription" component="div" />
 
             <label htmlFor="newItemImage">Image URL:</label>
-            <Field
-              type="text"
-              id="newItemImage"
-              name="newItemImage"
-            />
+            <Field type="text" id="newItemImage" name="newItemImage" />
 
-            <button type="submit" className="add-button">Add Item</button>
+            <button type="submit" className="add-button">
+              Add Item
+            </button>
           </Form>
         )}
       </Formik>
@@ -111,7 +102,7 @@ const MenuTable = () => {
           </tr>
         </thead>
         <tbody>
-          {menuItems.map(item => (
+          {menuItems.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>{item.name}</td>
@@ -119,11 +110,17 @@ const MenuTable = () => {
               <td>{item.description}</td>
               <td>
                 {item.image && (
-                  <img src={item.image} alt={item.name} style={{ maxWidth: '100px' }} />
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    style={{ maxWidth: "100px" }}
+                  />
                 )}
               </td>
               <td>
-                <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
+                <button onClick={() => handleDeleteItem(item.id)}>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
@@ -134,8 +131,3 @@ const MenuTable = () => {
 };
 
 export default MenuTable;
-
-
-
-
-

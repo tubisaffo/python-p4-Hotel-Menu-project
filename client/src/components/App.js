@@ -1,14 +1,14 @@
 // src/components/App.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Navbar from './NavBar'; // Ensure the correct import path
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Navbar from "./NavBar"; // Ensure the correct import path
 
-import MenuTable from '../pages/MenuTable';
-import OrderList from '../pages/OrderList';
-import LoginPage from '../pages/LoginPage';
-import MainPage from '../pages/MainPage';
-import OrdersPage from '../pages/OrdersPage';
-import MenuList from '../pages/MenuList'; // Import the MenuList component
+import MenuTable from "../pages/MenuTable";
+import OrderList from "../pages/OrderList";
+import LoginPage from "../pages/LoginPage";
+import MainPage from "../pages/MainPage";
+import OrdersPage from "../pages/OrdersPage";
+import MenuList from "../pages/MenuList"; // Import the MenuList component
 
 const App = () => {
   return (
@@ -54,10 +54,6 @@ const MainPageWithNavbar = () => (
 );
 
 // Define OrdersPageWithoutNavbar component without Navbar
-const OrdersPageWithoutNavbar = () => (
-  <OrdersPage />
-);
+const OrdersPageWithoutNavbar = () => <OrdersPage />;
 
 export default App;
-
-

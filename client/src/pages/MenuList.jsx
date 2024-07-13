@@ -1,14 +1,22 @@
 // src/pages/MenuList.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const MenuList = () => {
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    fetch('/api/menu')
-      .then(response => response.json())
-      .then(data => setMenuItems(data))
-      .catch(error => console.error('Error fetching menu items:', error));
+    fetch("/menu")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch menu items");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched menu items:", data);
+        setMenuItems(data);
+      })
+      .catch((error) => console.error("Error fetching menu items:", error));
   }, []);
 
   return (
@@ -25,7 +33,7 @@ const MenuList = () => {
           </tr>
         </thead>
         <tbody>
-          {menuItems.map(item => (
+          {menuItems.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>{item.name}</td>
@@ -33,7 +41,11 @@ const MenuList = () => {
               <td>{item.description}</td>
               <td>
                 {item.image && (
-                  <img src={item.image} alt={item.name} style={{ maxWidth: '100px' }} />
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    style={{ maxWidth: "100px" }}
+                  />
                 )}
               </td>
             </tr>
@@ -45,4 +57,3 @@ const MenuList = () => {
 };
 
 export default MenuList;
-

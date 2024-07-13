@@ -1,80 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import SideForm from './SideForm';
+import React, { useState, useEffect } from "react";
+// import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
-const MainPage = () => {
-  const [menuItems, setMenuItems] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const history = useHistory();
+export default function Home() {
+  const [menuitems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    const fetchMenuItems = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/menu');
+    fetch("/menu")
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Failed to fetch menu items');
+          throw new Error("Failed to fetch menu items");
         }
-        const data = await response.json();
-        setMenuItems(data);
-      } catch (error) {
-        console.error('Error fetching menu items:', error);
-      }
-    };
-
-    fetchMenuItems();
+        return response.json();
+      })
+      .then(setMenuItems)
+      .catch((error) => {
+        console.error("Error fetching menu items:", error);
+      });
   }, []);
 
-  const addToCart = (item) => {
-    const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
-    if (existingItem) {
-      setCartItems(cartItems.map(cartItem => 
-        cartItem.id === item.id 
-          ? { ...cartItem, quantity: cartItem.quantity + 1 } 
-          : cartItem
-      ));
-    } else {
-      setCartItems([...cartItems, { ...item, quantity: 1 }]);
-    }
-  };
-
-  const placeOrder = () => {
-    history.push('/orders', { cartItems });
-  };
-
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const filteredMenuItems = menuItems.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  function handleOrder(id) {
+    fetch(`/orders/${id}`, {
+      method: "POST",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to place order");
+        }
+        return response.json();
+      })
+      .then(() => {
+        setMenuItems((menuitems) =>
+          menuitems.filter((menuitem) => menuitem.id !== id)
+        );
+      })
+      .catch((error) => {
+        console.error("Error placing order:", error);
+      });
+  }
 
   return (
     <div>
       <Navbar />
       <h1>Hotel Menu</h1>
-      <input
+      {/* <input
         type="text"
         placeholder="Search for food..."
         value={searchQuery}
         onChange={handleSearchChange}
-      />
+      /> */}
       <div className="menu-list">
-        {filteredMenuItems.map(item => (
+        {menuitems.map((item) => (
           <div key={item.id} className="menu-item card">
             <img src={item.image} alt={item.name} className="food-image" />
             <h3>{item.name}</h3>
             <p>{item.description}</p>
             <p>Price: ${item.price}</p>
-            <button onClick={() => addToCart(item)}>Add to Cart</button>
+            <button onClick={() => handleOrder(item)}>Order</button>
           </div>
         ))}
       </div>
-      <SideForm chosenItems={cartItems} placeOrder={placeOrder} />
+      {/* <SideForm chosenItems={cartItems} placeOrder={placeOrder} /> */}
     </div>
   );
-};
-
-export default MainPage;
+}
