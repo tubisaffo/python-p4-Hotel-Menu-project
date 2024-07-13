@@ -5,12 +5,12 @@ import '../index.css';
 const LoginPage = () => {
   const history = useHistory();
 
-  const handleLogin = (role) => {
-    if (role === "staff") {
-      history.push("/main");
-    } else if (role === "admin") {
-      history.push("/menu");
-    }
+  const handleStaffLogin = () => {
+    history.push('/main');
+  };
+
+  const handleAdminLogin = () => {
+    history.push('/admin');
   };
 
   return (
@@ -22,6 +22,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-};
+}
 
 export default LoginPage;
