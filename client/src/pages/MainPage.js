@@ -10,10 +10,11 @@ const MainPage = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetch("/menu")
-      .then((response) => {
+    const fetchMenuItems = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/menu');
         if (!response.ok) {
-          throw new Error("Failed to fetch menu items");
+          throw new Error('Failed to fetch menu items');
         }
         const data = await response.json();
         setMenuItems(data);
