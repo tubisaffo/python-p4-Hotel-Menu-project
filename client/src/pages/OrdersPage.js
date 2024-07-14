@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-// import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar";
 import "../index.css";
 
 const OrdersPage = () => {
@@ -15,6 +15,7 @@ const OrdersPage = () => {
 
   return (
     <div>
+     <Navbar />
       <h1>Orders Page</h1>
       {orders.map((order) => (
         <div key={order.id}>
