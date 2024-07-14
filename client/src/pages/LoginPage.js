@@ -1,32 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import "../index.css";
 
 const LoginPage = () => {
   const history = useHistory();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("staff"); // Default role is staff
 
-  const handleStaffLogin = () => {
-    history.push("/main");
-  };
+  const handleLogin = () => {
+    // Here you can perform validation if needed
 
-  const handleAdminLogin = () => {
-    history.push("/admin");
+    // Assuming validation passes, you can redirect based on the role selected
+    if (role === "staff") {
+      history.push("/main");
+    } else if (role === "admin") {
+      history.push("/menutable");
+    }
+    // Clear username and password fields after login attempt
+    setUsername("");
+    setPassword("");
   };
-  //   const handleLogin = (role) => {
-  //     if (role === "staff") {
-  //       history.push("/main");
-  //     } else if (role === "admin") {
-  //       history.push("/MenuTable");
-  //     }
-  // >>>>>>> b29fef8 (added images)
-  // };
 
   return (
-    <div>
+    <div className="login-container">
       <h1>Login Page</h1>
-      <div className="login-buttons">
-        <button onClick={handleStaffLogin}>Staff Login</button>
-        <button onClick={handleAdminLogin}>Admin Login</button>
+      <div className="login-form">
+        <label>Select Role:</label>
+        <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="staff">Staff</option>
+          <option value="admin">Admin</option>
+        </select>
+        <label>Username:</label>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <label>Password:</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleLogin}>Login</button>
       </div>
     </div>
   );
