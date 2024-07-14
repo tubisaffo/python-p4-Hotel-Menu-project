@@ -95,13 +95,13 @@ def manage_orders():
         
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.json
-    user = User.query.filter_by(username=data['username']).first()
-    if user and user.password == data['password']:
-        return jsonify({'message': 'Login successful', 'user_id': user.id}), 200
-    return jsonify({'message': 'Invalid credentials'}), 401
+# @app.route('/login', methods=['POST'])
+# def login():
+#     data = request.json
+#     user = User.query.filter_by(username=data['username']).first()
+#     if user and user.password == data['password']:
+#         return jsonify({'message': 'Login successful', 'user_id': user.id}), 200
+#     return jsonify({'message': 'Invalid credentials'}), 401
 
 
 

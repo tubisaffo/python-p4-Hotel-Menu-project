@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import SideForm from './SideForm';
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import SideForm from "./SideForm";
 
-const MainPage = () => {
+export default function Home() {
   const [menuItems, setMenuItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+
+  const [searchQuery, setSearchQuery] = useState("");
+
   const history = useHistory();
 
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/menu');
+        const response = await fetch("http://localhost:5000/api/menu");
         if (!response.ok) {
-          throw new Error('Failed to fetch menu items');
+          throw new Error("Failed to fetch menu items");
         }
+
         const data = await response.json();
         setMenuItems(data);
       } catch (error) {
-        console.error('Error fetching menu items:', error);
+        console.error("Error fetching menu items:", error);
       }
     };
 
@@ -27,27 +30,28 @@ const MainPage = () => {
   }, []);
 
   const addToCart = (item) => {
-    const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
+    const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
     if (existingItem) {
-      setCartItems(cartItems.map(cartItem =>
-        cartItem.id === item.id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
-      ));
+      setCartItems(
+        cartItems.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        )
+      );
     } else {
       setCartItems([...cartItems, { ...item, quantity: 1 }]);
     }
   };
 
   const placeOrder = () => {
-    history.push('/orders', { cartItems });
+    history.push("/orders", { cartItems });
   };
-
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredMenuItems = menuItems.filter(item =>
+  const filteredMenuItems = menuItems.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -62,7 +66,7 @@ const MainPage = () => {
         onChange={handleSearchChange}
       />
       <div className="menu-list">
-        {filteredMenuItems.map(item => (
+        {filteredMenuItems.map((item) => (
           <div key={item.id} className="menu-item card">
             <img src={item.image} alt={item.name} className="food-image" />
             <h3>{item.name}</h3>
@@ -75,6 +79,4 @@ const MainPage = () => {
       <SideForm chosenItems={cartItems} placeOrder={placeOrder} />
     </div>
   );
-};
-
-export default MainPage;
+}

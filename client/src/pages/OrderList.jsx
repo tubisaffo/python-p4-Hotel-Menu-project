@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const OrderList = () => {
   // State to store orders
@@ -7,10 +7,10 @@ const OrderList = () => {
   // Fetch orders from API or database
   useEffect(() => {
     // Example fetch request
-    fetch('/api/orders')
-      .then(response => response.json())
-      .then(data => setOrders(data))
-      .catch(error => console.error('Error fetching orders:', error));
+    fetch("/orders")
+      .then((response) => response.json())
+      .then((data) => setOrders(data))
+      .catch((error) => console.error("Error fetching orders:", error));
   }, []);
 
   return (
@@ -26,7 +26,7 @@ const OrderList = () => {
           </tr>
         </thead>
         <tbody>
-          {orders.map(order => (
+          {orders.map((order) => (
             <tr key={order.id}>
               <td>{order.id}</td>
               <td>{order.description}</td>
@@ -40,6 +40,3 @@ const OrderList = () => {
 };
 
 export default OrderList;
-
-
-
