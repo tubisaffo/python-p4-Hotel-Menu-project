@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import SideForm from "./SideForm";
 
-export default function Home() {
+export default function Main() {
   const [menuItems, setMenuItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
 
@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/menu");
+        const response = await fetch("/menu");
         if (!response.ok) {
           throw new Error("Failed to fetch menu items");
         }
