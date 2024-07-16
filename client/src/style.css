@@ -1,0 +1,62 @@
+/* Assuming these are your styles */
+.landing-page {
+  height: 100vh; /* Full viewport height */
+  background-image: url('https://i.pinimg.com/564x/32/ec/26/32ec2673f5c368b0149a8bc4e81b38c5.jpg');
+  background-size: cover; /* Cover the entire element */
+  background-position: center; /* Center the background */
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-menu {
+  list-style-type: none;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navbar-menu li {
+  margin-right: 15px;
+}
+
+.navbar-menu li a {
+  color: white;
+  text-decoration: none;
+}
+
+.landing-section {
+  flex: 1; /* Take up remaining space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.landing-content {
+  max-width: 800px; /* Adjust as needed */
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.landing-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.landing-content p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}

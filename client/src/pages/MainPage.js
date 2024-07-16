@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import HomePage from "./HomePage";
 import SideForm from "./SideForm";
 
-export default function Main() {
+const Main = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-
   const [searchQuery, setSearchQuery] = useState("");
 
   const history = useHistory();
 
+  // Fetch menu items and update state
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
@@ -18,7 +18,6 @@ export default function Main() {
         if (!response.ok) {
           throw new Error("Failed to fetch menu items");
         }
-
         const data = await response.json();
         setMenuItems(data);
       } catch (error) {
@@ -27,7 +26,7 @@ export default function Main() {
     };
 
     fetchMenuItems();
-  }, []);
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   const addToCart = (item) => {
     const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
@@ -47,17 +46,16 @@ export default function Main() {
   const placeOrder = () => {
     history.push("/orders", { cartItems });
   };
+
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredMenuItems = menuItems.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Update menuItems state when a new item is added
 
   return (
     <div>
-      <Navbar />
+      <HomePage />
       <h1>Hotel Menu</h1>
       <input
         type="text"
@@ -66,17 +64,23 @@ export default function Main() {
         onChange={handleSearchChange}
       />
       <div className="menu-list">
-        {filteredMenuItems.map((item) => (
-          <div key={item.id} className="menu-item card">
-            <img src={item.image} alt={item.name} className="food-image" />
-            <h3>{item.name}</h3>
-            <p>{item.description}</p>
-            <p>Price: ${item.price}</p>
-            <button onClick={() => addToCart(item)}>Add to Cart</button>
-          </div>
-        ))}
+        {menuItems
+          .filter((item) =>
+            item.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .map((item) => (
+            <div key={item.id} className="menu-item card">
+              <img src={item.image} alt={item.name} className="food-image" />
+              <h3>{item.name}</h3>
+              <p>{item.description}</p>
+              <p>Price: ${item.price.toFixed(2)}</p>
+              <button onClick={() => addToCart(item)}>Add to Cart</button>
+            </div>
+          ))}
       </div>
       <SideForm chosenItems={cartItems} placeOrder={placeOrder} />
     </div>
   );
-}
+};
+
+export default Main;
