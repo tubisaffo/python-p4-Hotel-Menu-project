@@ -39,13 +39,13 @@ The Menu Management System is a web-based application designed to streamline and
 
 
 ## Technologies used
-HTML
-CSS
-Github
-React
-Python 3.8+
-Flask
-SQLite
+- HTML
+- CSS
+- Github
+- React
+- Python 3.8+
+- Flask
+- SQLite
 
 ## Introduction to how to acess Whats in our App
 ## Installation
@@ -77,7 +77,7 @@ running:
 6 **Start managing menus and orders**:
 - Explore the menu management and order creation features as described in the README.
 
-##Initial Migration - Menu Management system
+## Initial Migration - Menu Management system
 
 ```console
 $ tree 
@@ -98,7 +98,37 @@ $ tree
     └── seed.py
 ```
 ## The DB DIAGRAM
--The lint to our db digram https://dbdiagram.io/d/669895398b4bb5230ea75b9b
+-The link to our db digram https://dbdiagram.io/d/669895398b4bb5230ea75b9b
+Database Diagram
+
+## The Menu Management System's database schema includes the following tables:
+
+    Users:
+        id: Integer, Primary Key
+        email: String, Unique
+        password: String
+        role: String (either 'admin' or 'staff')
+
+    MenuItems:
+        id: Integer, Primary Key
+        name: String
+        description: String
+        price: Float
+        availability: Boolean
+
+    Orders:
+        id: Integer, Primary Key
+        user_id: Integer, Foreign Key (references Users.id)
+        total_cost: Float
+        order_date: DateTime
+
+    OrderItems:
+        id: Integer, Primary Key
+        order_id: Integer, Foreign Key (references Orders.id)
+        menu_item_id: Integer, Foreign Key (references MenuItems.id)
+        quantity: Integer
+
+
 ### License
 Copyright <2024> <Menu Project App>
 
