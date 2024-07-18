@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Cart from "./Cart";
+import { Link, useNavigate } from "react-router-dom";
 
 const Main = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [chosenItems, setChosenItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  // const history = useHistory();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -30,8 +30,8 @@ const Main = () => {
       (cartItem) => cartItem.id === item.id
     );
     if (existingItem) {
-      setChosenItems(
-        chosenItems.map((cartItem) =>
+      setChosenItems((prevItems) =>
+        prevItems.map((cartItem) =>
           cartItem.id === item.id
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
@@ -40,15 +40,6 @@ const Main = () => {
     } else {
       setChosenItems([...chosenItems, { ...item, quantity: 1 }]);
     }
-
-    // Optionally send a POST request to the backend to persist the order item
-    fetch("/add-to-cart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...item, quantity: 1 }),
-    }).catch((error) => console.error("Error adding item to cart:", error));
   };
 
   const handleSearchChange = (event) => {
@@ -60,6 +51,12 @@ const Main = () => {
     0
   );
 
+  const navigateToCart = () => {
+    // Store the chosenItems in localStorage or another method before navigating
+    localStorage.setItem("cartItems", JSON.stringify(chosenItems));
+    navigate("/cart");
+  };
+
   return (
     <div>
       <nav>
@@ -68,7 +65,7 @@ const Main = () => {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/cart">Cart ({totalItemsInCart})</Link>
+            <button onClick={navigateToCart}>Cart ({totalItemsInCart})</button>
           </li>
         </ul>
       </nav>
@@ -94,7 +91,6 @@ const Main = () => {
             </div>
           ))}
       </div>
-      <Cart chosenItems={chosenItems} />
     </div>
   );
 };

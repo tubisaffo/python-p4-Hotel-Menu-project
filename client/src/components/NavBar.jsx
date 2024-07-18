@@ -1,13 +1,13 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom"; // Import useHistory to navigate programmatically
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate to navigate programmatically
 
 const Navbar = () => {
-  const history = useHistory(); // Get history object for programmatic navigation
+  const navigate = useNavigate(); // Get navigate function for programmatic navigation
 
   const handleLogout = () => {
     // Perform logout actions if needed (e.g., clear session, tokens, etc.)
     // Then navigate to the login page
-    history.push("/"); // Redirect to login page
+    navigate("/"); // Redirect to login page
   };
 
   return (
