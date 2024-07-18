@@ -1,23 +1,21 @@
-
 # Application Name: MENU MANAGEMENT SYSTEM
 
-#### Date, 18/07/2024
+#### Date: 18/07/2024
 
-#### By *Molly Nzembi Mbugi* *Saffo Mohamed* *Samwel Gathuku* and *David Maina1*
+#### By: *Molly Nzembi Mbugi*, *Saffo Mohamed*, *Samwel Gathuku*, and *David Maina*
 
 ## Description
 
 The Menu Management System is a web-based application designed to streamline and manage menu items for a hotel. The system allows users to log in, create orders from the menu, and enables administrators to add, edit, and delete menu items. This ensures efficient management of the menu and provides a user-friendly interface for both staff and administrators to handle daily operations.
 
-Key features of the Menu Management System include:
+## Key Features
 
-    User Authentication: Secure login functionality allowing only authorized users to access the system.
-        Staff: Can log in and create orders from the menu.
-        Admin: Can log in, add new menu items, edit existing items, and delete items no longer offered.
-    Menu Management: Administrators can manage the menu by adding, editing, and deleting items.
-    Order Management: Staff can create orders by selecting items from the menu, and view a list of all orders, including details such as items ordered, quantities, and total cost.
+- **User Authentication**: Secure login functionality allowing only authorized users to access the system.
+  - **Staff**: Can log in and create orders from the menu.
+  - **Admin**: Can log in, add new menu items, edit existing items, and delete items no longer offered.
+- **Menu Management**: Administrators can manage the menu by adding, editing, and deleting items.
+- **Order Management**: Staff can create orders by selecting items from the menu and view a list of all orders, including details such as items ordered, quantities, and total cost.
 
----
 
 ## Introduction
 
