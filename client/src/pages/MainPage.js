@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import HomePage from "./HomePage";
 import SideForm from "./SideForm";
 
 const Main = () => {
@@ -55,7 +54,6 @@ const Main = () => {
 
   return (
     <div>
-      <HomePage />
       <h1>Hotel Menu</h1>
       <input
         type="text"
