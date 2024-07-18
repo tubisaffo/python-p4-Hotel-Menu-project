@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
 import "../style.css";
 
 const LandingPage = () => {
@@ -7,7 +7,7 @@ const LandingPage = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("staff"); // Default to 'staff'
   const [rememberMe, setRememberMe] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate(); // Use useNavigate
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,14 +17,15 @@ const LandingPage = () => {
     const isStaff = role === "staff"; // Check if the selected role is staff
 
     if (isAdmin) {
-      history.push("/menu-table"); // Redirect to admin's menu table page
+      navigate("/menu-table"); // Redirect to admin's menu table page
     } else if (isStaff) {
-      history.push("/main-page"); // Redirect to staff's main page
+      navigate("/main-page"); // Redirect to staff's main page
     } else {
       // Handle incorrect credentials or other cases
       console.log("Invalid role");
     }
   };
+
   return (
     <div className="landing-page">
       <section className="landing-section">
