@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 # Standard library imports
-from random import randint, choice as rc
+from random import randint
 
 # Remote library imports
 from faker import Faker
 from app import app
-from models import db, User, MenuItem, Order
+from models import db, User, MenuItem, Order, OrderItem
 from datetime import datetime
 
 with app.app_context():
@@ -14,9 +14,11 @@ with app.app_context():
 
     # Delete all records/rows in the tables
     print("Deleting data...")
-    User.query.delete()
-    MenuItem.query.delete()
-    Order.query.delete()
+    db.session.query(OrderItem).delete()
+    db.session.query(Order).delete()
+    db.session.query(MenuItem).delete()
+    db.session.query(User).delete()
+    db.session.commit()
 
     print("Creating users...")
     users = []
@@ -25,7 +27,8 @@ with app.app_context():
         email = fake.email()
         password = fake.password()
         role = fake.random_element(elements=('user', 'admin'))
-        users.append(User(username=username, email=email, password=password, role=role))
+        user = User(username=username, email=email, password=password, role=role)
+        users.append(user)
 
     db.session.add_all(users)
     db.session.commit()
@@ -33,9 +36,9 @@ with app.app_context():
     print("Creating menu items...")
     menu_items = []
 
-    # New lists of food items with direct image URLs
+    # Define new items with direct image URLs
     new_items = [
-        {"name": "Chicken Tenders", "description": "Crispy fried chicken tenders", "price": 5.99, "image":" https://www.wellplated.com/wp-content/uploads/2023/05/Oven-Fried-Chicken-Tenders-Recipe.jpg"},
+        {"name": "Chicken Tenders", "description": "Crispy fried chicken tenders", "price": 5.99, "image": "https://www.wellplated.com/wp-content/uploads/2023/05/Oven-Fried-Chicken-Tenders-Recipe.jpg"},
         {"name": "Loaded Fries", "description": "Fries topped with cheese and bacon", "price": 4.49, "image": "https://i.pinimg.com/564x/09/55/e8/0955e8fe4b333f8ede041b56b7c9ef32.jpg"},
         {"name": "Chicken Alfredo", "description": "Creamy Alfredo pasta with chicken", "price": 7.99, "image": "https://i.pinimg.com/564x/55/e8/6d/55e86d6d91966e09f0723953d3aca9bc.jpg"},
         {"name": "Crispy Chicken Waffles", "description": "Crispy chicken served on waffles", "price": 6.99, "image": "https://i.pinimg.com/564x/e6/70/fc/e670fc161bd48c5a6a5265e10bdd3173.jpg"},
@@ -54,23 +57,29 @@ with app.app_context():
 
     # Add new items to the menu_items list
     for item in new_items:
-        menu_items.append(MenuItem(name=item["name"], description=item["description"], price=item["price"], image=item["image"]))
+        menu_item = MenuItem(name=item["name"], description=item["description"], price=item["price"], image=item["image"])
+        menu_items.append(menu_item)
 
     db.session.add_all(menu_items)
     db.session.commit()
 
-    print("Creating orders...")
-    orders = []
+    print("Creating orders and order items...")
+    order_items = []
     for _ in range(20):
-        order = Order(
-            user_id=fake.random_element(elements=[user.id for user in users]),
-            menu_item_id=fake.random_element(elements=[menu_item.id for menu_item in menu_items]),
-            quantity=fake.random_int(min=1, max=5),
-            order_date=fake.date_time_this_year()
-        )
-        orders.append(order)
+        user = fake.random_element(elements=users)
+        order = Order(user_id=user.id, order_date=fake.date_time_this_year(), status=fake.random_element(elements=["pending", "completed", "canceled"]))
+        db.session.add(order)
+        db.session.commit()
 
-    db.session.add_all(orders)
+        num_order_items = randint(1, 5)
+        for _ in range(num_order_items):
+            menu_item = fake.random_element(elements=menu_items)
+            # Fetch the image URL of the menu item
+            menu_item_image = menu_item.image
+            order_item = OrderItem(order_id=order.id, menu_item_id=menu_item.id, menuitem_name=menu_item.name, menuitem_price=menu_item.price, menu_item_image=menu_item_image, quantity=randint(1, 5))
+            order_items.append(order_item)
+
+    db.session.add_all(order_items)
     db.session.commit()
 
     print("Seeding done!")

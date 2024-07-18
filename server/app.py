@@ -1,47 +1,28 @@
-#!/usr/bin/env python3
-
-# Standard library imports
-
-# Remote library imports
 from datetime import datetime
-from flask import Flask, make_response, request, jsonify
+from flask import Flask, request, jsonify
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 from werkzeug.exceptions import NotFound
 from flask_cors import CORS
 
-from models import MenuItem, Order, db, User
+from models import MenuItem, Order, OrderItem, db  # Import only necessary models and db
 
-# Initialize the flask application
 app = Flask(__name__)
-
-# Configure the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-CORS(app) # Allow requests from all origins
-
-migrate = Migrate(app, db)
+CORS(app)  # Allow requests from all origins
 
 db.init_app(app)
+migrate = Migrate(app, db)
 
 api = Api(app)
 
-# Add your model imports
-
-
-# Views go here!
-
+# Views go here
 
 @app.route('/')
-def index ():
-    
-    return 'FUCK YOU RUTO!!!'
-@app.route('/users', methods=['GET', 'POST'])
-def get_users():
-    users = User.query.all()
-    return [user.to_dict(rules=['-orders']) for user in users]
-
+def index():
+    return 'Welcome to your Flask App!'
 
 @app.route('/menu', methods=['GET', 'POST', 'DELETE'])
 def handle_menu_items():
@@ -79,6 +60,48 @@ def handle_menu_item(id):
         db.session.commit()
         return jsonify({"message": "Menu item deleted successfully"})
 
+@app.route('/cart_items', methods=['GET'])
+def get_cart_items():
+    # Assuming you have a way to identify the current session_id or user_id
+    user_id = request.args.get('user_id')  # Adjust based on how you manage sessions
+    
+    # Example query to fetch order items associated with a session_id
+    cart_items = OrderItem.query.filter_by(session_id=user_id).all()
+    
+    return jsonify([item.to_dict() for item in cart_items])
+
+@app.route('/order_items', methods=['POST'])
+def add_order_item():
+    data = request.get_json()
+
+    # Ensure all required fields are provided in the request
+    if 'order_id' not in data or 'menu_item_id' not in data or 'menuitem_name' not in data or 'menuitem_price' not in data:
+        return jsonify({"error": "Invalid data. 'order_id', 'menu_item_id', 'menuitem_name', and 'menuitem_price' are required."}), 400
+
+    new_order_item = OrderItem(
+        order_id=data['order_id'],
+        menu_item_id=data['menu_item_id'],
+        menuitem_name=data['menuitem_name'],
+        menuitem_price=data['menuitem_price'],
+        menu_item_image=data.get('menu_item_image'),
+        quantity=data.get('quantity', 1)  # Default quantity to 1 if not provided
+    )
+
+    db.session.add(new_order_item)
+    db.session.commit()
+
+    return jsonify({"message": "Order item added successfully", "order_item": new_order_item.to_dict()}), 201
+
+@app.route('/order_items/<int:id>', methods=['DELETE'])
+def delete_order_item(id):
+    order_item = OrderItem.query.get(id)
+    if not order_item:
+        raise NotFound("Order item not found")
+    
+    db.session.delete(order_item)
+    db.session.commit()
+    return jsonify({"message": "Order item deleted successfully"})
+
 @app.route('/orders', methods=['GET', 'POST'])
 def manage_orders():
     if request.method == 'POST':
@@ -87,23 +110,9 @@ def manage_orders():
         db.session.add(new_order)
         db.session.commit()
         return jsonify({"message": "Order placed successfully"}), 201
+    
     orders = Order.query.all()
     return jsonify([{"id": order.id, "user_id": order.user_id, "menu_item_id": order.menu_item_id, "quantity": order.quantity, "order_date": order.order_date} for order in orders])
-
-    
-    
-        
-
-
-# @app.route('/login', methods=['POST'])
-# def login():
-#     data = request.json
-#     user = User.query.filter_by(username=data['username']).first()
-#     if user and user.password == data['password']:
-#         return jsonify({'message': 'Login successful', 'user_id': user.id}), 200
-#     return jsonify({'message': 'Invalid credentials'}), 401
-
-
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

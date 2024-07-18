@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import SideForm from "./SideForm";
+import { Link } from "react-router-dom";
+import Cart from "./Cart";
 
 const Main = () => {
   const [menuItems, setMenuItems] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
+  const [chosenItems, setChosenItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  // const history = useHistory();
 
-  const history = useHistory();
-
-  // Fetch menu items and update state
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
@@ -25,35 +23,55 @@ const Main = () => {
     };
 
     fetchMenuItems();
-  }, []); // Empty dependency array ensures this effect runs only once on component mount
+  }, []);
 
   const addToCart = (item) => {
-    const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
+    const existingItem = chosenItems.find(
+      (cartItem) => cartItem.id === item.id
+    );
     if (existingItem) {
-      setCartItems(
-        cartItems.map((cartItem) =>
+      setChosenItems(
+        chosenItems.map((cartItem) =>
           cartItem.id === item.id
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         )
       );
     } else {
-      setCartItems([...cartItems, { ...item, quantity: 1 }]);
+      setChosenItems([...chosenItems, { ...item, quantity: 1 }]);
     }
-  };
 
-  const placeOrder = () => {
-    history.push("/orders", { cartItems });
+    // Optionally send a POST request to the backend to persist the order item
+    fetch("/add-to-cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...item, quantity: 1 }),
+    }).catch((error) => console.error("Error adding item to cart:", error));
   };
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  // Update menuItems state when a new item is added
+  const totalItemsInCart = chosenItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   return (
     <div>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/cart">Cart ({totalItemsInCart})</Link>
+          </li>
+        </ul>
+      </nav>
       <h1>Hotel Menu</h1>
       <input
         type="text"
@@ -76,7 +94,7 @@ const Main = () => {
             </div>
           ))}
       </div>
-      <SideForm chosenItems={cartItems} placeOrder={placeOrder} />
+      <Cart chosenItems={chosenItems} />
     </div>
   );
 };

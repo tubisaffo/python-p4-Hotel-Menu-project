@@ -117,7 +117,7 @@ const MenuTable = ({ updateMenuItems }) => {
                     <img
                       src={item.image}
                       alt={item.name}
-                      style={{ maxWidth: "100px" }}
+                      style={{ maxWidth: "200px" }}
                     />
                   )}
                 </td>
