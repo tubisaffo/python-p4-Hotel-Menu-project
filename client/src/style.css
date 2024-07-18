@@ -1,6 +1,6 @@
 /* Assuming these are your styles */
 .landing-page {
-  height: 100vh; /* Full viewport height */
+  height: 3%; /* Full viewport height */
   background-image: url('https://i.pinimg.com/564x/32/ec/26/32ec2673f5c368b0149a8bc4e81b38c5.jpg');
   background-size: cover; /* Cover the entire element */
   background-position: center; /* Center the background */
@@ -62,73 +62,72 @@
 }
 
 
+/* General styling for the login container */
 .login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 30vh;
-  background-color: #f2f2f2;
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
 }
 
-h2 {
+.login-container h2 {
+  text-align: center;
   margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
+  font-family: 'Arial', sans-serif;
   color: #333;
 }
 
 .form-group {
   margin-bottom: 15px;
-  display: flex;
-  align-items: center;
 }
 
 .form-group label {
-  margin-right: 10px;
-  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+  font-family: 'Arial', sans-serif;
   color: #333;
 }
 
-.username-input,
-.password-input {
-  padding: 10px;
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 250px;
-  font-size: 16px;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
-.remember-me-checkbox {
+.form-group input[type="checkbox"] {
+  width: auto;
   margin-right: 5px;
 }
 
-.forgot-password-link {
+.form-group a {
   margin-left: 10px;
-  font-size: 14px;
-  color: #333;
+  font-size: 0.9em;
+  color: #007BFF;
   text-decoration: none;
 }
 
-.login-button {
-  padding: 10px 20px;
+.form-group a:hover {
+  text-decoration: underline;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #24405f;
   border: none;
-  border-radius: 4px;
-  background-color: #4CAF50;
+  border-radius: 5px;
   color: white;
-  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+  font-size: 1em;
   cursor: pointer;
 }
 
-.create-account-text {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 14px;
-  color: #333;
+button[type="submit"]:hover {
+  background-color: #00b389;
 }
-
-.create-account-text a {
-  color: #4CAF50;
-  text-decoration: none;
-}
-

@@ -31,7 +31,7 @@
 
 form {
   margin-bottom: 20px;
-  display: grid; /* Use grid layout for more control */
+  /* display: grid; Use grid layout for more control */
   gap: 10px;
 }
 
