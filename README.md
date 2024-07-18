@@ -16,6 +16,26 @@ The Menu Management System is a web-based application designed to streamline and
 - **Menu Management**: Administrators can manage the menu by adding, editing, and deleting items.
 - **Order Management**: Staff can create orders by selecting items from the menu and view a list of all orders, including details such as items ordered, quantities, and total cost.
 
+## How It Works
+
+1. **User Authentication**:
+   - Users (both staff and admin) need to log in with their Email and their passwords to access the main home pages system.
+
+2. **Admin Functions**:
+   - After logging in, admins can add new menu items by navigating to the "Menu main page" section, filling in the details, and adding item.
+   - Admins can edit existing items by selecting an item from the menu list, updating the details, and saving the changes.
+   - Admins can delete items no longer offered by selecting the item and confirming the deletion.
+    - Admins can view all items that are in oders that have been created by the staff.
+     - Admins can View everything that is on menu list.
+    
+
+3. **Staff Functions**:
+   - After logging in, staff can create orders by selecting items from the menu and adding them to the order list this will be through adding to cart this will create an order.
+   - Staff can search a specific meal that they want from what we offer.
+   - Staff can view all created orders, including details such as items ordered, quantities, and total cost.
+
+4. **Order Management**:
+   - All users can view a list of all orders, including detailed information about each order including their prices too but this is mostly controlled by the admin.
 
 ## Introduction
 
