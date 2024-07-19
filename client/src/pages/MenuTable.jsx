@@ -96,7 +96,12 @@ const MenuTable = ({ updateMenuItems }) => {
             {({ errors }) => (
               <Form>
                 <label htmlFor="newItemName">Name:</label>
-                <Field type="text" id="newItemName" name="newItemName" required />
+                <Field
+                  type="text"
+                  id="newItemName"
+                  name="newItemName"
+                  required
+                />
                 <ErrorMessage name="newItemName" component="div" />
 
                 <label htmlFor="newItemPrice">Price:</label>
@@ -124,7 +129,11 @@ const MenuTable = ({ updateMenuItems }) => {
                 <button type="submit" className="add-button">
                   Update Item
                 </button>
-                <button type="button" onClick={() => setEditItem(null)} className="cancel-button">
+                <button
+                  type="button"
+                  onClick={() => setEditItem(null)}
+                  className="cancel-button"
+                >
                   Cancel
                 </button>
               </Form>
@@ -153,7 +162,12 @@ const MenuTable = ({ updateMenuItems }) => {
             {({ errors }) => (
               <Form>
                 <label htmlFor="newItemName">Name:</label>
-                <Field type="text" id="newItemName" name="newItemName" required />
+                <Field
+                  type="text"
+                  id="newItemName"
+                  name="newItemName"
+                  required
+                />
                 <ErrorMessage name="newItemName" component="div" />
 
                 <label htmlFor="newItemPrice">Price:</label>
@@ -215,7 +229,9 @@ const MenuTable = ({ updateMenuItems }) => {
                 </td>
                 <td>
                   <button onClick={() => handleEditItem(item)}>Edit</button>
-                  <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
+                  <button onClick={() => handleDeleteItem(item.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

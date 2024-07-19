@@ -12,7 +12,40 @@ const Cart = () => {
   }, []);
 
   const calculateTotalPrice = (items) => {
+    if (!items || !Array.isArray(items)) {
+      return 0;
+    }
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
+  const handlePlaceOrder = async () => {
+    try {
+      const response = await fetch("http://localhost:5555/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: 1, // Replace with actual user ID
+          order_items: chosenItems.map((item) => ({
+            menuitem_id: item.id,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create order");
+      }
+
+      const data = await response.json();
+      console.log("Order created successfully:", data);
+
+      // Redirect to Orders Page after order creation
+      window.location.href = `/orders/${data.id}`;
+    } catch (error) {
+      console.error("Error creating order:", error);
+    }
   };
 
   return (
@@ -66,7 +99,9 @@ const Cart = () => {
           </tfoot>
         )}
       </table>
-      <button className="place-order-btn">Place Order</button>
+      <button className="place-order-btn" onClick={handlePlaceOrder}>
+        Place Order
+      </button>
     </div>
   );
 };

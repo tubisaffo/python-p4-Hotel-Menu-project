@@ -95,7 +95,7 @@ class OrderItem(db.Model, SerializerMixin):
     menuitem_price = db.Column(db.Float, nullable=False)
     menu_item_image = db.Column(db.String(200))
     quantity = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)  # Assuming session_id field
+    # user_id = db.Column(db.Integer, nullable=False)  # Assuming session_id field
 
     order = db.relationship('Order', back_populates='order_items')
     menu_item = db.relationship('MenuItem', back_populates='order_items')

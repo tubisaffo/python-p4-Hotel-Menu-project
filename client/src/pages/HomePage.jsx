@@ -63,6 +63,16 @@ const LandingPage = () => {
                   required
                 />
               </div>
+              <div>
+                <label htmlFor="Email">Email</label>
+                <input
+                  type="email"
+                  id="Email"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+              </div>
               <div className="form-group">
                 <label htmlFor="role">Role</label>
                 <select
