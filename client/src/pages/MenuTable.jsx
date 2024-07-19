@@ -5,11 +5,15 @@ import Navbar from "../components/NavBar";
 
 const MenuTable = ({ updateMenuItems }) => {
   const [menuItems, setMenuItems] = useState([]);
+  const [editItem, setEditItem] = useState(null);
 
   useEffect(() => {
     fetch("/menu")
       .then((response) => response.json())
-      .then((data) => setMenuItems(data))
+      .then((data) => {
+        console.log("Fetched menu items:", data); // Log fetched data
+        setMenuItems(data);
+      })
       .catch((error) => console.error("Error fetching menu items:", error));
   }, []);
 
@@ -22,15 +26,45 @@ const MenuTable = ({ updateMenuItems }) => {
       image: values.newItemImage,
     };
 
+    console.log("Adding new item:", newItem); // Log new item
     setMenuItems([...menuItems, newItem]);
+    resetForm();
+  };
 
+  const handleEditItem = (item) => {
+    console.log("Editing item:", item); // Log item to edit
+    setEditItem(item);
+  };
+
+  const handleUpdateItem = (values, { resetForm }) => {
+    const updatedItems = menuItems.map((item) =>
+      item.id === editItem.id
+        ? {
+            ...item,
+            name: values.newItemName,
+            price: parseFloat(values.newItemPrice),
+            description: values.newItemDescription,
+            image: values.newItemImage,
+          }
+        : item
+    );
+    console.log("Updated items:", updatedItems); // Log updated items
+    setMenuItems(updatedItems);
+    setEditItem(null);
     resetForm();
   };
 
   const handleDeleteItem = (itemId) => {
-    const updatedItems = menuItems.filter((item) => item.id !== itemId);
-    setMenuItems(updatedItems);
-    //  DELETE request to API to delete the item
+    fetch(`/menu/${itemId}`, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then(() => {
+        const updatedItems = menuItems.filter((item) => item.id !== itemId);
+        console.log("Deleted item ID:", itemId); // Log deleted item ID
+        setMenuItems(updatedItems);
+      })
+      .catch((error) => console.error("Error deleting item:", error));
   };
 
   return (
@@ -39,60 +73,118 @@ const MenuTable = ({ updateMenuItems }) => {
       <div className="menu-table">
         <h1 className="menu-header">Menu Table</h1>
 
-        <Formik
-          initialValues={{
-            newItemName: "",
-            newItemPrice: "",
-            newItemDescription: "",
-            newItemImage: "",
-          }}
-          validate={(values) => {
-            const errors = {};
+        {editItem ? (
+          <Formik
+            initialValues={{
+              newItemName: editItem.name,
+              newItemPrice: editItem.price,
+              newItemDescription: editItem.description,
+              newItemImage: editItem.image,
+            }}
+            validate={(values) => {
+              const errors = {};
+              if (!values.newItemName) {
+                errors.newItemName = "Required";
+              }
+              if (!values.newItemPrice) {
+                errors.newItemPrice = "Required";
+              }
+              return errors;
+            }}
+            onSubmit={handleUpdateItem}
+          >
+            {({ errors }) => (
+              <Form>
+                <label htmlFor="newItemName">Name:</label>
+                <Field type="text" id="newItemName" name="newItemName" required />
+                <ErrorMessage name="newItemName" component="div" />
 
-            if (!values.newItemName) {
-              errors.newItemName = "Required";
-            }
-            if (!values.newItemPrice) {
-              errors.newItemPrice = "Required";
-            }
-            return errors;
-          }}
-          onSubmit={handleAddItem}
-        >
-          {({ errors }) => (
-            <Form>
-              <label htmlFor="newItemName">Name:</label>
-              <Field type="text" id="newItemName" name="newItemName" required />
-              <ErrorMessage name="newItemName" component="div" />
+                <label htmlFor="newItemPrice">Price:</label>
+                <Field
+                  type="number"
+                  id="newItemPrice"
+                  name="newItemPrice"
+                  step="0.01"
+                  required
+                />
+                <ErrorMessage name="newItemPrice" component="div" />
 
-              <label htmlFor="newItemPrice">Price:</label>
-              <Field
-                type="number"
-                id="newItemPrice"
-                name="newItemPrice"
-                step="0.01"
-                required
-              />
-              <ErrorMessage name="newItemPrice" component="div" />
+                <label htmlFor="newItemDescription">Description:</label>
+                <Field
+                  type="text"
+                  id="newItemDescription"
+                  name="newItemDescription"
+                  required
+                />
+                <ErrorMessage name="newItemDescription" component="div" />
 
-              <label htmlFor="newItemDescription">Description:</label>
-              <Field
-                type="text"
-                id="newItemDescription"
-                name="newItemDescription"
-                required
-              />
-              <ErrorMessage name="newItemDescription" component="div" />
+                <label htmlFor="newItemImage">Image URL:</label>
+                <Field type="text" id="newItemImage" name="newItemImage" />
 
-              <label htmlFor="newItemImage">Image URL:</label>
-              <Field type="text" id="newItemImage" name="newItemImage" />
+                <button type="submit" className="add-button">
+                  Update Item
+                </button>
+                <button type="button" onClick={() => setEditItem(null)} className="cancel-button">
+                  Cancel
+                </button>
+              </Form>
+            )}
+          </Formik>
+        ) : (
+          <Formik
+            initialValues={{
+              newItemName: "",
+              newItemPrice: "",
+              newItemDescription: "",
+              newItemImage: "",
+            }}
+            validate={(values) => {
+              const errors = {};
+              if (!values.newItemName) {
+                errors.newItemName = "Required";
+              }
+              if (!values.newItemPrice) {
+                errors.newItemPrice = "Required";
+              }
+              return errors;
+            }}
+            onSubmit={handleAddItem}
+          >
+            {({ errors }) => (
+              <Form>
+                <label htmlFor="newItemName">Name:</label>
+                <Field type="text" id="newItemName" name="newItemName" required />
+                <ErrorMessage name="newItemName" component="div" />
 
-              <button type="submit" className="add-button">
-                Add Item
-              </button>
-            </Form>
-          )}
-        </Formik>
+                <label htmlFor="newItemPrice">Price:</label>
+                <Field
+                  type="number"
+                  id="newItemPrice"
+                  name="newItemPrice"
+                  step="0.01"
+                  required
+                />
+                <ErrorMessage name="newItemPrice" component="div" />
+
+                <label htmlFor="newItemDescription">Description:</label>
+                <Field
+                  type="text"
+                  id="newItemDescription"
+                  name="newItemDescription"
+                  required
+                />
+                <ErrorMessage name="newItemDescription" component="div" />
+
+                <label htmlFor="newItemImage">Image URL:</label>
+                <Field type="text" id="newItemImage" name="newItemImage" />
+
+                <button type="submit" className="add-button">
+                  Add Item
+                </button>
+              </Form>
+            )}
+          </Formik>
+        )}
 
         <table className="table">
           <thead>
@@ -122,9 +214,8 @@ const MenuTable = ({ updateMenuItems }) => {
                   )}
                 </td>
                 <td>
-                  <button onClick={() => handleDeleteItem(item.id)}>
-                    Delete
-                  </button>
+                  <button onClick={() => handleEditItem(item)}>Edit</button>
+                  <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
                 </td>
               </tr>
             ))}
