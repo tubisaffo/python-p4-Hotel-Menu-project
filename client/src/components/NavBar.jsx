@@ -31,16 +31,7 @@ const Navbar = () => {
             Menu List
           </Link>
         </li>
-        <li>
-          <Link
-            to="/order-list"
-            className={
-              window.location.pathname === "/order-list" ? "active" : ""
-            }
-          >
-            Order List
-          </Link>
-        </li>
+        {/* Remove the Order List link */}
         <li>
           <button onClick={handleLogout} className="logout-button">
             Logout

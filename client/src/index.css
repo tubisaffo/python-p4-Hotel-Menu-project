@@ -421,3 +421,49 @@ input[type="text"] {
 .card:hover {
   transform: scale(1.03);
 }
+/* Global Variables */
+:root {
+  --bg: #282c34;
+  --header: #fff;
+  --link: #61dafb;
+  --text: hsla(0, 0%, 100%, 0.88);
+}
+
+/* OrderList Component Styles */
+.order-table-container {
+  background-color: var(--bg);
+  padding: 20px;
+  border-radius: 8px;
+  color: var(--text);
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.order-table th, .order-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  color: black; /* Ensure text color is set to black */
+}
+
+.order-table th {
+  background-color: lightskyblue;
+}
+
+.order-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.order-table tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--header); /* Use global header color */
+}

@@ -57,6 +57,13 @@ const Main = () => {
     navigate("/cart");
   };
 
+  const handleLogout = () => {
+    // Clear user data from localStorage or any authentication state
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userData");
+    navigate("/"); // Redirect to the home page or login page
+  };
+
   return (
     <div>
       <nav>
@@ -66,6 +73,9 @@ const Main = () => {
           </li>
           <li>
             <button onClick={navigateToCart}>Cart ({totalItemsInCart})</button>
+          </li>
+          <li>
+            <button onClick={handleLogout}>Logout</button> {/* Logout button */}
           </li>
         </ul>
       </nav>

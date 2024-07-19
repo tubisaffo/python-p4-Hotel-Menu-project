@@ -1,4 +1,3 @@
-// src/pages/MenuList.js
 import React, { useState, useEffect } from "react";
 
 const MenuList = () => {
