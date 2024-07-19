@@ -60,59 +60,41 @@ def handle_menu_item(id):
         db.session.commit()
         return jsonify({"message": "Menu item deleted successfully"})
 
-@app.route('/cart_items', methods=['GET'])
-def get_cart_items():
-    # Assuming you have a way to identify the current session_id or user_id
-    user_id = request.args.get('user_id')  # Adjust based on how you manage sessions
-    
-    # Example query to fetch order items associated with a session_id
-    cart_items = OrderItem.query.filter_by(session_id=user_id).all()
-    
-    return jsonify([item.to_dict() for item in cart_items])
-
-@app.route('/order_items', methods=['POST'])
-def add_order_item():
-    data = request.get_json()
-
-    # Ensure all required fields are provided in the request
-    if 'order_id' not in data or 'menu_item_id' not in data or 'menuitem_name' not in data or 'menuitem_price' not in data:
-        return jsonify({"error": "Invalid data. 'order_id', 'menu_item_id', 'menuitem_name', and 'menuitem_price' are required."}), 400
-
-    new_order_item = OrderItem(
-        order_id=data['order_id'],
-        menu_item_id=data['menu_item_id'],
-        menuitem_name=data['menuitem_name'],
-        menuitem_price=data['menuitem_price'],
-        menu_item_image=data.get('menu_item_image'),
-        quantity=data.get('quantity', 1)  # Default quantity to 1 if not provided
-    )
-
-    db.session.add(new_order_item)
-    db.session.commit()
-
-    return jsonify({"message": "Order item added successfully", "order_item": new_order_item.to_dict()}), 201
-
-@app.route('/order_items/<int:id>', methods=['DELETE'])
-def delete_order_item(id):
-    order_item = OrderItem.query.get(id)
-    if not order_item:
-        raise NotFound("Order item not found")
-    
-    db.session.delete(order_item)
-    db.session.commit()
-    return jsonify({"message": "Order item deleted successfully"})
-
-@app.route('/orders', methods=['GET', 'POST'])
-def manage_orders():
-    if request.method == 'POST':
+@app.route('/api/orders', methods=['POST'])
+def create_order():
+    try:
         data = request.get_json()
-        new_order = Order(user_id=data['user_id'], menu_item_id=data['menu_item_id'], quantity=data['quantity'])
+        user_id = data.get('user_id')
+        order_items = data.get('order_items')  # List of order items with menuitem_id and quantity
+
+        if not user_id or not order_items:
+            raise ValueError("Missing user_id or order_items")
+
+        new_order = Order(user_id=user_id, status="Pending")
         db.session.add(new_order)
         db.session.commit()
-        return jsonify({"message": "Order placed successfully"}), 201
-    
-    orders = Order.query.all()
-    return jsonify([{"id": order.id, "user_id": order.user_id, "menu_item_id": order.menu_item_id, "quantity": order.quantity, "order_date": order.order_date} for order in orders])
+
+        for item in order_items:
+            menuitem_id = item.get('menuitem_id')
+            quantity = item.get('quantity')
+            if not menuitem_id or quantity is None:
+                raise ValueError("Missing menuitem_id or quantity")
+            menu_item = MenuItem.query.get(menuitem_id)
+            if not menu_item:
+                raise ValueError(f"Menu item with ID {menuitem_id} not found")
+            order_item = OrderItem(order_id=new_order.id, menu_item_id=menuitem_id, quantity=quantity,
+                                   menuitem_name=menu_item.name, menuitem_price=menu_item.price, menu_item_image=menu_item.image)
+            db.session.add(order_item)
+
+        db.session.commit()
+        return jsonify(new_order.to_dict()), 201
+
+    except ValueError as e:
+        app.logger.error(f"ValueError: {e}")
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        app.logger.error(f"Error creating order: {e}")
+        return jsonify({"error": "Failed to create order"}), 500
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
