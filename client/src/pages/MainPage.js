@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NavBar from '../components/navbar';
-import "../style.css"; // Ensure this path matches your CSS file location
+import "../style.css"; 
 
 const Main = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -51,7 +51,7 @@ const Main = () => {
   );
 
   return (
-    <div className="main-container">
+    <div>
       <NavBar />
       <div className="header-container">
         <h1>Hotel Menu</h1>

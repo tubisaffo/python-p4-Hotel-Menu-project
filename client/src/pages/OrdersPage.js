@@ -25,37 +25,39 @@ const OrdersPage = () => {
   return (
     <div>
       <NavBar />
-      <h1>Orders Page</h1>
-      <table className="orders-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Items</th>
-            <th>Total Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.length > 0 ? (
-            orders.map((order) => (
-              <tr key={order.id}>
-                <td>{order.id}</td>
-                <td>
-                  {order.items.map((item) => (
-                    <p key={item.id}>
-                      {item.name} (x{item.quantity})
-                    </p>
-                  ))}
-                </td>
-                <td>${order.totalPrice.toFixed(2)}</td>
-              </tr>
-            ))
-          ) : (
+      <div className="orders-content">
+        <h1 className="ordersh1">Orders Page</h1>
+        <table className="orders-table">
+          <thead>
             <tr>
-              <td colSpan="3">No orders found.</td>
+              <th>ID</th>
+              <th>Items</th>
+              <th>Total Price</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {orders.length > 0 ? (
+              orders.map((order) => (
+                <tr key={order.id}>
+                  <td>{order.id}</td>
+                  <td>
+                    {order.items.map((item) => (
+                      <p key={item.id}>
+                        {item.name} (x{item.quantity})
+                      </p>
+                    ))}
+                  </td>
+                  <td>${order.totalPrice.toFixed(2)}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3">No orders found.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

@@ -451,3 +451,69 @@ img {
 .add-to-cart-button:hover {
   background-color: #0056b3;
 }
+
+.orders-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.orders-content {
+  padding: 20px;
+}
+.ordersh1{
+  color: #000;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.orders-table thead {
+  background-color: #007bff;
+  color: #000000;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.orders-table th {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.orders-table td {
+  font-size: 1rem;
+}
+
+.orders-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.orders-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.orders-table p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.orders-table td[colspan="3"] {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}
