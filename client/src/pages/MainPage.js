@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import NavBar from '../components/navbar';
-
+import "../style.css"; // Ensure this path matches your CSS file location
 
 const Main = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [chosenItems, setChosenItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -52,15 +51,18 @@ const Main = () => {
   );
 
   return (
-    <div>
+    <div className="main-container">
       <NavBar />
-      <h1>Hotel Menu</h1>
-      <input
-        type="text"
-        placeholder="Search for food..."
-        value={searchQuery}
-        onChange={handleSearchChange}
-      />
+      <div className="header-container">
+        <h1>Hotel Menu</h1>
+        <input
+          type="text"
+          placeholder="Search for food..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="search-input"
+        />
+      </div>
       <div className="menu-list">
         {menuItems
           .filter((item) =>
@@ -69,10 +71,12 @@ const Main = () => {
           .map((item) => (
             <div key={item.id} className="menu-item card">
               <img src={item.image} alt={item.name} className="food-image" />
-              <h3>{item.name}</h3>
-              <p>{item.description}</p>
-              <p>Price: ${item.price.toFixed(2)}</p>
-              <button onClick={() => addToCart(item)}>Add to Cart</button>
+              <div className="item-details">
+                <h3>{item.name}</h3>
+                <p>{item.description}</p>
+                <p className="price">Price: ${item.price.toFixed(2)}</p>
+                <button onClick={() => addToCart(item)} className="add-to-cart-button">Add to Cart</button>
+              </div>
             </div>
           ))}
       </div>
