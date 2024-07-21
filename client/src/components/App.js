@@ -6,6 +6,7 @@ import MenuList from "../pages/MenuList";
 import OrdersPage from "../pages/OrdersPage";
 import HomePage from "../pages/HomePage";
 import MenuTable from "../pages/MenuTable";
+import OrdersPage from '../pages/OrdersPage'; 
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/orders/:orderId" element={<OrdersPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/menu-list" element={<MenuList />} />
+        <Route path="/orders" element={<OrdersPage />} />
       </Routes>
     </Router>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import NavBar from "../components/navbar";
 import "../style.css";
 
 const OrdersPage = () => {
@@ -10,93 +10,56 @@ const OrdersPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchOrder = async () => {
+    const fetchOrders = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5555/api/orders/${orderId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
+        const response = await fetch("/orders");
         if (!response.ok) {
-          throw new Error(
-            `Network response was not ok: ${response.statusText}`
-          );
+          throw new Error("Failed to fetch orders");
         }
-
         const data = await response.json();
-        console.log("Fetched order data:", data); // Log fetched data
-        setOrder(data);
-      } catch (err) {
-        console.error("Error fetching order:", err); // Log error
-        setError(err);
-      } finally {
-        setLoading(false);
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
       }
     };
 
-    fetchOrder();
-  }, [orderId]);
-
-  const handleCheckout = () => {
-    navigate("/"); // Redirect to home page
-  };
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+    fetchOrders();
+  }, []);
 
   return (
-    <div className="order-container">
-      <h3 className="order-title">Order Details</h3>
-      <table className="order-table">
+    <div>
+      <NavBar />
+      <h1>Orders Page</h1>
+      <table className="orders-table">
         <thead>
           <tr>
-            <th>Order ID</th>
-            <th>Menu Items</th>
-            <th>Order Date</th>
-            <th>Status</th>
+            <th>ID</th>
+            <th>Items</th>
+            <th>Total Price</th>
           </tr>
         </thead>
         <tbody>
-          {order ? (
-            <>
-              <tr>
+          {orders.length > 0 ? (
+            orders.map((order) => (
+              <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>
-                  <ul>
-                    {order.order_items && order.order_items.length > 0 ? (
-                      order.order_items.map((item, index) => (
-                        <li key={item.id || index}>
-                          {item.menuitem_name} (x{item.quantity})
-                        </li>
-                      ))
-                    ) : (
-                      <li>No items in this order.</li>
-                    )}
-                  </ul>
+                  {order.items.map((item) => (
+                    <p key={item.id}>
+                      {item.name} (x{item.quantity})
+                    </p>
+                  ))}
                 </td>
-                <td>{new Date(order.order_date).toLocaleString()}</td>
-                <td>{order.status}</td>
+                <td>${order.totalPrice.toFixed(2)}</td>
               </tr>
-            </>
+            ))
           ) : (
             <tr>
-              <td colSpan="4" className="empty-order-message">
-                No order details available.
-              </td>
+              <td colSpan="3">No orders found.</td>
             </tr>
           )}
         </tbody>
       </table>
-      <div className="order-actions">
-        <button className="pay-button" onClick={handleCheckout}>
-          Pay & Checkout
-        </button>
-      </div>
     </div>
   );
 };

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import "../style.css"; // Make sure this path is correct
+import { useNavigate } from "react-router-dom";
+import "../style.css";
+import NavBar from "../components/navbar";
 
 const Cart = () => {
   const [chosenItems, setChosenItems] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedItems = localStorage.getItem("cartItems");
@@ -20,35 +23,31 @@ const Cart = () => {
 
   const handlePlaceOrder = async () => {
     try {
-      const response = await fetch("http://localhost:5555/api/orders", {
+      const response = await fetch("/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          user_id: 1, // Replace with actual user ID
-          order_items: chosenItems.map((item) => ({
-            menuitem_id: item.id,
-            quantity: item.quantity,
-          })),
-        }),
+        body: JSON.stringify({ items: chosenItems }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to create order");
+      if (response.ok) {
+        setChosenItems([]);
+        localStorage.removeItem("cartItems");
+        alert("Order placed successfully!");
+        navigate("/orders"); 
+      } else {
+        throw new Error("Failed to place order");
       }
-
-      const data = await response.json();
-      console.log("Order created successfully:", data);
-
-      // Redirect to Orders Page after order creation
-      window.location.href = `/orders/${data.id}`;
     } catch (error) {
-      console.error("Error creating order:", error);
+      console.error("Error placing order:", error);
+      alert("Error placing order. Please try again.");
     }
   };
 
   return (
+    <div>
+    <NavBar/>
     <div className="cart-container">
       <h3 className="cart-title">Cart Items</h3>
       <table className="cart-table">
@@ -103,6 +102,7 @@ const Cart = () => {
         Place Order
       </button>
     </div>
+  </div>
   );
 };
 

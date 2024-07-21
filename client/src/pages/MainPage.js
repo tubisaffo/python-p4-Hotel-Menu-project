@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import NavBar from '../components/navbar';
+
 
 const Main = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [chosenItems, setChosenItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -51,34 +51,9 @@ const Main = () => {
     0
   );
 
-  const navigateToCart = () => {
-    // Store the chosenItems in localStorage or another method before navigating
-    localStorage.setItem("cartItems", JSON.stringify(chosenItems));
-    navigate("/cart");
-  };
-
-  const handleLogout = () => {
-    // Clear user data from localStorage or any authentication state
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userData");
-    navigate("/"); // Redirect to the home page or login page
-  };
-
   return (
     <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <button onClick={navigateToCart}>Cart ({totalItemsInCart})</button>
-          </li>
-          <li>
-            <button onClick={handleLogout}>Logout</button> {/* Logout button */}
-          </li>
-        </ul>
-      </nav>
+      <NavBar />
       <h1>Hotel Menu</h1>
       <input
         type="text"
