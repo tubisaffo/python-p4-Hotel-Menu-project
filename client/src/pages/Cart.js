@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import "../style.css"; // Make sure this path is correct
+import { useNavigate } from "react-router-dom";
+import "../style.css";
+import NavBar from "../components/navbar";
 
 const Cart = () => {
   const [chosenItems, setChosenItems] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedItems = localStorage.getItem("cartItems");
@@ -15,7 +18,33 @@ const Cart = () => {
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
+  const handlePlaceOrder = async () => {
+    try {
+      const response = await fetch("/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ items: chosenItems }),
+      });
+
+      if (response.ok) {
+        setChosenItems([]);
+        localStorage.removeItem("cartItems");
+        alert("Order placed successfully!");
+        navigate("/orders"); 
+      } else {
+        throw new Error("Failed to place order");
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Error placing order. Please try again.");
+    }
+  };
+
   return (
+    <div>
+    <NavBar/>
     <div className="cart-container">
       <h3 className="cart-title">Cart Items</h3>
       <table className="cart-table">
@@ -66,8 +95,11 @@ const Cart = () => {
           </tfoot>
         )}
       </table>
-      <button className="place-order-btn">Place Order</button>
+      <button className="place-order-btn" onClick={handlePlaceOrder}>
+        Place Order
+      </button>
     </div>
+  </div>
   );
 };
 
