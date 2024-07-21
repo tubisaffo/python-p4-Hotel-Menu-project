@@ -13,10 +13,9 @@ const NavBar = () => {
   };
 
   const navigateToCart = () => {
-    // Store the chosenItems in localStorage or another method before navigating
-    localStorage.setItem("cartItems", JSON.stringify(chosenItems));
     navigate("/cart");
   };
+  
 
   const totalItemsInCart = 0; // Replace with actual cart item count logic
 
