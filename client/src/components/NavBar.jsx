@@ -15,8 +15,8 @@ const Navbar = () => {
       <ul>
         <li>
           <Link
-            to="/menu"
-            className={window.location.pathname === "/menu" ? "active" : ""}
+            to="/menu-table"
+            className={window.location.pathname === "/menu-table" ? "active" : ""}
           >
             Menu
           </Link>

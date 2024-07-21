@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import "../style.css";
+import Navbar from "../components/NavBar";
 
 const MenuList = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -19,6 +21,8 @@ const MenuList = () => {
   }, []);
 
   return (
+    <div>
+    <Navbar />
     <div className="menu-list">
       <h1 className="menu-header">Menu List</h1>
       <table className="table">
@@ -52,6 +56,7 @@ const MenuList = () => {
         </tbody>
       </table>
     </div>
+  </div>
   );
 };
 
