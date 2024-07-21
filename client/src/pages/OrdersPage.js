@@ -3,11 +3,7 @@ import NavBar from "../components/navbar";
 import "../style.css";
 
 const OrdersPage = () => {
-  const { orderId } = useParams();
-  const navigate = useNavigate(); // Hook for navigation
-  const [order, setOrder] = useState({ order_items: [] });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
