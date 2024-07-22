@@ -23,30 +23,75 @@ const Cart = () => {
 
   const handlePlaceOrder = async () => {
     try {
-      const response = await fetch("/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ items: chosenItems }),
-      });
+      const userId = localStorage.getItem("userId") || "defaultUserId";
 
-      console.log("Response Status:", response.status);
-      console.log("Response Body:", await response.text()); // Log the response body
+      const orderItems = chosenItems.map((item) => ({
+        menuitem_id: item.id, // Ensure this matches the expected field name in backend
+        quantity: item.quantity,
+      }));
 
-      if (response.ok) {
-        const orderDetails = await response.json(); // Assuming the API returns order details
-        setChosenItems([]);
-        localStorage.removeItem("cartItems");
-        alert("Order placed successfully!");
-        navigate(`/orders/${orderDetails.orderId}`); // Navigate to OrdersPage with orderId
-      } else {
-        throw new Error("Failed to place order");
+      const response = await fetch(
+        "https://menu-qdlu.onrender.com/api/orders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            order_items: orderItems,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${errorText}`
+        );
       }
+
+      const responseBody = await response.json();
+      console.log("Response Status:", response.status);
+      console.log("Response Body:", responseBody);
+
+      setChosenItems([]);
+      localStorage.removeItem("cartItems");
+      localStorage.setItem("orderId", responseBody.orderId);
+      alert("Order placed successfully!");
+      navigate("/order-table");
     } catch (error) {
       console.error("Error placing order:", error);
       alert("Error placing order. Please try again.");
     }
+  };
+
+  const handleRemoveItem = (itemId) => {
+    const updatedItems = chosenItems.filter((item) => item.id !== itemId);
+    setChosenItems(updatedItems);
+    localStorage.setItem("cartItems", JSON.stringify(updatedItems));
+  };
+
+  const handleIncreaseQuantity = (itemId) => {
+    const updatedItems = chosenItems.map((item) => {
+      if (item.id === itemId) {
+        return { ...item, quantity: item.quantity + 1 };
+      }
+      return item;
+    });
+    setChosenItems(updatedItems);
+    localStorage.setItem("cartItems", JSON.stringify(updatedItems));
+  };
+
+  const handleDecreaseQuantity = (itemId) => {
+    const updatedItems = chosenItems.map((item) => {
+      if (item.id === itemId) {
+        return { ...item, quantity: item.quantity > 1 ? item.quantity - 1 : 1 };
+      }
+      return item;
+    });
+    setChosenItems(updatedItems);
+    localStorage.setItem("cartItems", JSON.stringify(updatedItems));
   };
 
   return (
@@ -62,6 +107,7 @@ const Cart = () => {
               <th>Quantity</th>
               <th>Price</th>
               <th>Total</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -76,14 +122,36 @@ const Cart = () => {
                     />
                   </td>
                   <td>{item.name}</td>
-                  <td>{item.quantity}</td>
+                  <td>
+                    <button
+                      onClick={() => handleDecreaseQuantity(item.id)}
+                      className="quantity-btn"
+                    >
+                      ➖
+                    </button>
+                    {item.quantity}
+                    <button
+                      onClick={() => handleIncreaseQuantity(item.id)}
+                      className="quantity-btn"
+                    >
+                      ➕
+                    </button>
+                  </td>
                   <td>${item.price.toFixed(2)}</td>
                   <td>${(item.price * item.quantity).toFixed(2)}</td>
+                  <td>
+                    <button
+                      onClick={() => handleRemoveItem(item.id)}
+                      className="remove-btn"
+                    >
+                      🗑️
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="empty-cart-message">
+                <td colSpan="6" className="empty-cart-message">
                   Your cart is empty.
                 </td>
               </tr>
@@ -92,7 +160,7 @@ const Cart = () => {
           {chosenItems.length > 0 && (
             <tfoot>
               <tr>
-                <td colSpan="4" className="total-label">
+                <td colSpan="5" className="total-label">
                   Total Price:
                 </td>
                 <td className="total-price">

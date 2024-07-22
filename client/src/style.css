@@ -436,7 +436,7 @@ button[type="submit"]:hover {
 
 
 img {
-  max-width: 100px;
+  max-width: 100%;
   height: auto;
   margin: 10px;
   border-radius: 10px;
@@ -595,93 +595,4 @@ img {
   text-align: center;
   color: #888;
   font-style: italic;
-}
-/* General styles */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  color: #333;
-}
-
-.navbar {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  position: sticky;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.navbar .navbar-brand {
-  font-size: 1.5em;
-}
-
-.navbar .navbar-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  gap: 10px;
-}
-
-.navbar .navbar-menu li {
-  display: inline;
-}
-
-.navbar .navbar-menu a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.navbar .navbar-menu a:hover {
-  text-decoration: underline;
-}
-
-/* AllOrdersPage styles */
-.all-orders-page {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f8f9fa; /* Light background for contrast */
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(144, 180, 12, 0.1);
-}
-
-.all-orders-page h3 {
-  font-size: 1.5em;
-  margin-bottom: 20px;
-  color: #000000; /* Black color for the title */
-}
-
-.orders-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.orders-table th, .orders-table td {
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: left;
-}
-
-.orders-table th {
-  background-color: #f2f2f2;
-}
-
-.orders-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.orders-table tr:hover {
-  background-color: #f1f1f1;
-}
-
-.view-details-link {
-  color: #007bff; /* Blue color for links */
-  text-decoration: none;
-}
-
-.view-details-link:hover {
-  text-decoration: underline;
 }

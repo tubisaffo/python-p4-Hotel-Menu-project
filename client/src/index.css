@@ -233,7 +233,7 @@ input[type="text"] {
 }
 
 .menu-list {
-  display: grid;
+  display: flex;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
@@ -429,38 +429,6 @@ input[type="text"] {
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
-/* OrderList Component Styles */
-.order-table-container {
-  background-color: var(--bg);
-  padding: 20px;
-  border-radius: 8px;
-  color: var(--text);
-}
-
-.order-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.order-table th, .order-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-  color: black; /* Ensure text color is set to black */
-}
-
-.order-table th {
-  background-color: lightskyblue;
-}
-
-.order-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.order-table tbody tr:hover {
-  background-color: #f2f2f2;
-}
 
 h1 {
   text-align: center;
