@@ -233,7 +233,7 @@ input[type="text"] {
 }
 
 .menu-list {
-  display: grid;
+  display: flex;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }

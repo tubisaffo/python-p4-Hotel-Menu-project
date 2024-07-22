@@ -171,7 +171,7 @@ const Cart = () => {
           )}
         </table>
         <button className="place-order-btn" onClick={handlePlaceOrder}>
-          Go to Checkout
+          Place Order
         </button>
       </div>
     </div>
