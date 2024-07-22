@@ -8,7 +8,8 @@ const LandingPage = () => {
       <HomeNav />
       <section className="landing-section">
         <div className="landing-content">
-          <h1 className="landing-title">Welcome to Online Food Menu</h1>
+        <h1 className="landing-title" style={{ color: 'black' }}>Welcome to Online Food Menu</h1>
+
           <p>
             Explore a world of culinary delights with our Food Menu app. Whether
             you're a food enthusiast or a restaurant owner, our platform is

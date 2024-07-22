@@ -12,7 +12,11 @@ const MenuTable = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Fetched menu items:", data);
-        setMenuItems(data);
+        const formattedData = data.map(item => ({
+          ...item,
+          price: item.price !== undefined ? item.price : 0,
+        }));
+        setMenuItems(formattedData);
       })
       .catch((error) => console.error("Error fetching menu items:", error));
   }, []);
@@ -43,7 +47,6 @@ const MenuTable = () => {
   };
 
   const handleEditItem = (item) => {
-    console.log("Editing item:", item);
     setEditItem(item);
   };
 
@@ -63,7 +66,12 @@ const MenuTable = () => {
       },
       body: JSON.stringify(updatedItem),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log("Updated item:", data);
         const updatedItems = menuItems.map((item) =>
@@ -77,6 +85,7 @@ const MenuTable = () => {
   };
 
   const handleDeleteItem = (itemId) => {
+    console.log("Deleting item with ID:", itemId);
     fetch(`https://menu-qdlu.onrender.com/menu/${itemId}`, {
       method: "DELETE",
     })
@@ -84,6 +93,7 @@ const MenuTable = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+        console.log("Item deleted successfully", response);
         setMenuItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
       })
       .catch((error) => console.error("Error deleting item:", error));
@@ -218,7 +228,7 @@ const MenuTable = () => {
               <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.name}</td>
-                <td>${item.price.toFixed(2)}</td>
+                <td>${item.price !== undefined ? item.price.toFixed(2) : 'N/A'}</td>
                 <td>{item.description}</td>
                 <td>
                   {item.image && (
@@ -231,9 +241,7 @@ const MenuTable = () => {
                 </td>
                 <td>
                   <button onClick={() => handleEditItem(item)}>Edit</button>
-                  <button onClick={() => handleDeleteItem(item.id)}>
-                    Delete
-                  </button>
+                  <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
                 </td>
               </tr>
             ))}
