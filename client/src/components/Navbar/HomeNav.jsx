@@ -14,10 +14,10 @@ const HomeNav = ({ cartItemCount }) => {
           <Link to="/main-page">Menu</Link>
         </li>
         <li>
-          <Link to="/order">Order</Link>
+          <Link to="/orders">Orders</Link> {/* Link to all orders page */}
         </li>
         <li>
-          <Link to="/AdminLogin">Admin</Link>
+          <Link to="/adminlogin">Admin</Link>
         </li>
         <li>
           <Link to="/cart" className="cart-icon">

@@ -1,97 +1,104 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import NavBar from "../components/Navbar/HomeNav";
-import "../style.css";
+import { useParams, useNavigate } from "react-router-dom";
 
 const OrdersPage = () => {
-  const { orderId } = useParams(); // Get orderId from URL
-  const [orderDetails, setOrderDetails] = useState(null);
+  const { orderId } = useParams();
+  const navigate = useNavigate();
+  const [order, setOrder] = useState({ order_items: [] });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchOrderDetails = async () => {
+    if (!orderId) {
+      setError("No order ID provided");
+      setLoading(false);
+      return;
+    }
+
+    const fetchOrder = async () => {
       try {
-        const response = await fetch(`/orders/${orderId}`);
+        console.log(`Fetching order with ID: ${orderId}`); // Debug line
+        const response = await fetch(`https://menu-qdlu.onrender.com/api/orders/${orderId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
         if (!response.ok) {
-          throw new Error("Failed to fetch order details");
+          throw new Error(`Network response was not ok: ${response.statusText}`);
         }
+
         const data = await response.json();
-        setOrderDetails(data);
-      } catch (error) {
-        console.error("Error fetching order details:", error);
+        console.log("Fetched order data:", data); // Debug line
+        setOrder(data);
+      } catch (err) {
+        console.error("Error fetching order:", err); // Debug line
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchOrderDetails();
+    fetchOrder();
   }, [orderId]);
 
-  if (!orderDetails) {
-    return <div>Loading...</div>;
-  }
-
-  const calculateTotalPrice = (items) => {
-    if (!items || !Array.isArray(items)) {
-      return 0;
-    }
-    return items.reduce((total, item) => total + item.price * item.quantity, 0);
+  const handleCheckout = () => {
+    navigate("/"); // Redirect to home page
   };
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
-    <div>
-      <NavBar />
-      <div className="order-container">
-        <h3 className="order-title">Order Details</h3>
-        <h4>Order Number: {orderDetails.orderId}</h4>
-        <table className="order-table">
-          <thead>
+    <div className="order-container">
+      <h3 className="order-title">Order Details</h3>
+      <table className="order-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Menu Items</th>
+            <th>Order Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {order.id ? (
             <tr>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
+              <td>{order.id}</td>
+              <td>
+                <ul>
+                  {order.order_items.length > 0 ? (
+                    order.order_items.map((item, index) => (
+                      <li key={item.id || index}>
+                        {item.menuitem_name} (x{item.quantity})
+                      </li>
+                    ))
+                  ) : (
+                    <li>No items in this order.</li>
+                  )}
+                </ul>
+              </td>
+              <td>{new Date(order.order_date).toLocaleString()}</td>
+              <td>{order.status}</td>
             </tr>
-          </thead>
-          <tbody>
-            {orderDetails.items.length > 0 ? (
-              orderDetails.items.map((item) => (
-                <tr key={item.id}>
-                  <td>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="order-food-image"
-                    />
-                  </td>
-                  <td>{item.name}</td>
-                  <td>{item.quantity}</td>
-                  <td>${item.price.toFixed(2)}</td>
-                  <td>${(item.price * item.quantity).toFixed(2)}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="empty-order-message">
-                  No items found in this order.
-                </td>
-              </tr>
-            )}
-          </tbody>
-          {orderDetails.items.length > 0 && (
-            <tfoot>
-              <tr>
-                <td colSpan="4" className="total-label">
-                  Total Price:
-                </td>
-                <td className="total-price">
-                  ${calculateTotalPrice(orderDetails.items).toFixed(2)}
-                </td>
-              </tr>
-            </tfoot>
+          ) : (
+            <tr>
+              <td colSpan="4" className="empty-order-message">
+                No order details available.
+              </td>
+            </tr>
           )}
-        </table>
+        </tbody>
+      </table>
+      <div className="order-actions">
+        <button className="pay-button" onClick={handleCheckout}>
+          Pay & Checkout
+        </button>
       </div>
     </div>
   );
 };
 
 export default OrdersPage;
+

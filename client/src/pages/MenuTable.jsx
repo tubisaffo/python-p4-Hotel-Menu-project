@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import "../index.css";
 import Navbar from "../components/Navbar/NavBar";
 
-const MenuTable = ({ updateMenuItems }) => {
+const MenuTable = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [editItem, setEditItem] = useState(null);
 
@@ -11,7 +11,7 @@ const MenuTable = ({ updateMenuItems }) => {
     fetch("https://menu-qdlu.onrender.com/menu")
       .then((response) => response.json())
       .then((data) => {
-        console.log("Fetched menu items:", data); // Log fetched data
+        console.log("Fetched menu items:", data);
         setMenuItems(data);
       })
       .catch((error) => console.error("Error fetching menu items:", error));
@@ -19,50 +19,72 @@ const MenuTable = ({ updateMenuItems }) => {
 
   const handleAddItem = (values, { resetForm }) => {
     const newItem = {
-      id: menuItems.length + 1,
       name: values.newItemName,
       price: parseFloat(values.newItemPrice),
       description: values.newItemDescription,
       image: values.newItemImage,
     };
 
-    console.log("Adding new item:", newItem); // Log new item
-    setMenuItems([...menuItems, newItem]);
-    resetForm();
+    console.log("Adding new item:", newItem);
+    fetch("https://menu-qdlu.onrender.com/menu", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newItem),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Added item:", data);
+        setMenuItems([...menuItems, data]);
+        resetForm();
+      })
+      .catch((error) => console.error("Error adding item:", error));
   };
 
   const handleEditItem = (item) => {
-    console.log("Editing item:", item); // Log item to edit
+    console.log("Editing item:", item);
     setEditItem(item);
   };
 
   const handleUpdateItem = (values, { resetForm }) => {
-    const updatedItems = menuItems.map((item) =>
-      item.id === editItem.id
-        ? {
-            ...item,
-            name: values.newItemName,
-            price: parseFloat(values.newItemPrice),
-            description: values.newItemDescription,
-            image: values.newItemImage,
-          }
-        : item
-    );
-    console.log("Updated items:", updatedItems); // Log updated items
-    setMenuItems(updatedItems);
-    setEditItem(null);
-    resetForm();
+    const updatedItem = {
+      name: values.newItemName,
+      price: parseFloat(values.newItemPrice),
+      description: values.newItemDescription,
+      image: values.newItemImage,
+    };
+
+    console.log("Updating item with ID:", editItem.id);
+    fetch(`https://menu-qdlu.onrender.com/menu/${editItem.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedItem),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Updated item:", data);
+        const updatedItems = menuItems.map((item) =>
+          item.id === editItem.id ? data : item
+        );
+        setMenuItems(updatedItems);
+        setEditItem(null);
+        resetForm();
+      })
+      .catch((error) => console.error("Error updating item:", error));
   };
 
   const handleDeleteItem = (itemId) => {
-    fetch(`/menu/${itemId}`, {
+    fetch(`https://menu-qdlu.onrender.com/menu/${itemId}`, {
       method: "DELETE",
     })
-      .then((response) => response.json())
-      .then(() => {
-        const updatedItems = menuItems.filter((item) => item.id !== itemId);
-        console.log("Deleted item ID:", itemId); // Log deleted item ID
-        setMenuItems(updatedItems);
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        setMenuItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
       })
       .catch((error) => console.error("Error deleting item:", error));
   };
@@ -86,8 +108,8 @@ const MenuTable = ({ updateMenuItems }) => {
               if (!values.newItemName) {
                 errors.newItemName = "Required";
               }
-              if (!values.newItemPrice) {
-                errors.newItemPrice = "Required";
+              if (!values.newItemPrice || values.newItemPrice <= 0) {
+                errors.newItemPrice = "Must be a positive number";
               }
               return errors;
             }}
@@ -96,12 +118,7 @@ const MenuTable = ({ updateMenuItems }) => {
             {({ errors }) => (
               <Form>
                 <label htmlFor="newItemName">Name:</label>
-                <Field
-                  type="text"
-                  id="newItemName"
-                  name="newItemName"
-                  required
-                />
+                <Field type="text" id="newItemName" name="newItemName" required />
                 <ErrorMessage name="newItemName" component="div" />
 
                 <label htmlFor="newItemPrice">Price:</label>
@@ -115,12 +132,7 @@ const MenuTable = ({ updateMenuItems }) => {
                 <ErrorMessage name="newItemPrice" component="div" />
 
                 <label htmlFor="newItemDescription">Description:</label>
-                <Field
-                  type="text"
-                  id="newItemDescription"
-                  name="newItemDescription"
-                  required
-                />
+                <Field type="text" id="newItemDescription" name="newItemDescription" required />
                 <ErrorMessage name="newItemDescription" component="div" />
 
                 <label htmlFor="newItemImage">Image URL:</label>
@@ -152,8 +164,8 @@ const MenuTable = ({ updateMenuItems }) => {
               if (!values.newItemName) {
                 errors.newItemName = "Required";
               }
-              if (!values.newItemPrice) {
-                errors.newItemPrice = "Required";
+              if (!values.newItemPrice || values.newItemPrice <= 0) {
+                errors.newItemPrice = "Must be a positive number";
               }
               return errors;
             }}
@@ -162,12 +174,7 @@ const MenuTable = ({ updateMenuItems }) => {
             {({ errors }) => (
               <Form>
                 <label htmlFor="newItemName">Name:</label>
-                <Field
-                  type="text"
-                  id="newItemName"
-                  name="newItemName"
-                  required
-                />
+                <Field type="text" id="newItemName" name="newItemName" required />
                 <ErrorMessage name="newItemName" component="div" />
 
                 <label htmlFor="newItemPrice">Price:</label>
@@ -181,12 +188,7 @@ const MenuTable = ({ updateMenuItems }) => {
                 <ErrorMessage name="newItemPrice" component="div" />
 
                 <label htmlFor="newItemDescription">Description:</label>
-                <Field
-                  type="text"
-                  id="newItemDescription"
-                  name="newItemDescription"
-                  required
-                />
+                <Field type="text" id="newItemDescription" name="newItemDescription" required />
                 <ErrorMessage name="newItemDescription" component="div" />
 
                 <label htmlFor="newItemImage">Image URL:</label>
@@ -243,3 +245,4 @@ const MenuTable = ({ updateMenuItems }) => {
 };
 
 export default MenuTable;
+

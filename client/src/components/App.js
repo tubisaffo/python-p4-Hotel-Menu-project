@@ -7,6 +7,7 @@ import HomePage from "../pages/HomePage";
 import AdminLogin from "../pages/Adminlogin";
 import MenuTable from "../pages/MenuTable";
 import OrdersPage from "../pages/OrdersPage";
+import AllOrdersPage from "../pages/AllOrdersPage"; // New component for listing all orders
 
 function App() {
   return (
@@ -18,10 +19,12 @@ function App() {
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/menu-list" element={<MenuList />} />
-        <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/orders" element={<AllOrdersPage />} /> {/* New route */}
+        <Route path="/orders/:orderId" element={<OrdersPage />} /> {/* Dynamic route */}
       </Routes>
     </Router>
   );
 }
 
 export default App;
+

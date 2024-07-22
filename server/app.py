@@ -117,24 +117,41 @@ def get_order(id):
 
 
 # Route to create a new order
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-@app.route('/orders', methods=['POST'])
-def place_order():
+@app.route('/api/orders', methods=['POST'])
+def create_order():
     try:
-        data = request.json
-        # Process the order
-        # Example: save to database, etc.
-        
-        order_id = "12345"  # Example order ID
-        return jsonify({"orderId": order_id}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        data = request.get_json()
+        user_id = data.get('user_id')
+        order_items = data.get('order_items')  # List of order items with menuitem_id and quantity
 
-if __name__ == "__main__":
-    app.run(debug=True)
+        if not user_id or not order_items:
+            raise ValueError("Missing user_id or order_items")
+
+        new_order = Order(user_id=user_id, status="Pending")
+        db.session.add(new_order)
+        db.session.commit()
+
+        for item in order_items:
+            menuitem_id = item.get('menuitem_id')
+            quantity = item.get('quantity')
+            if not menuitem_id or quantity is None:
+                raise ValueError("Missing menuitem_id or quantity")
+            menu_item = MenuItem.query.get(menuitem_id)
+            if not menu_item:
+                raise ValueError(f"Menu item with ID {menuitem_id} not found")
+            order_item = OrderItem(order_id=new_order.id, menu_item_id=menuitem_id, quantity=quantity,
+                                   menuitem_name=menu_item.name, menuitem_price=menu_item.price, menu_item_image=menu_item.image)
+            db.session.add(order_item)
+
+        db.session.commit()
+        return jsonify(new_order.to_dict()), 201
+
+    except ValueError as e:
+        app.logger.error(f"ValueError: {e}")
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        app.logger.error(f"Error creating order: {e}")
+        return jsonify({"error": "Failed to create order"}), 500
 
 # Route to update a specific order by ID
 @app.route('/api/orders/<int:id>', methods=['PUT'])
