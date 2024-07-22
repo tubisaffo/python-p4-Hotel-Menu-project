@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../components/Navbar/HomeNav";
+import HomeNav from "../components/Navbar/HomeNav";
 import "../style.css";
 
 const Main = () => {
@@ -28,26 +28,34 @@ const Main = () => {
     const existingItem = chosenItems.find(
       (cartItem) => cartItem.id === item.id
     );
+    let updatedItems;
+
     if (existingItem) {
-      setChosenItems((prevItems) =>
-        prevItems.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        )
+      updatedItems = chosenItems.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem
       );
     } else {
-      setChosenItems([...chosenItems, { ...item, quantity: 1 }]);
+      updatedItems = [...chosenItems, { ...item, quantity: 1 }];
     }
+
+    setChosenItems(updatedItems);
+    localStorage.setItem("cartItems", JSON.stringify(updatedItems));
   };
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
+  const cartItemCount = chosenItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
   return (
     <div>
-      <NavBar />
+      <HomeNav cartItemCount={cartItemCount} />
       <div className="header-container">
         <h1>Hotel Menu</h1>
         <input

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../style.css";
-import Navbar from "../components/Navbar/A";
+import Navbar from "../components/Navbar/NavBar";
 
 const MenuList = () => {
   const [menuItems, setMenuItems] = useState([]);

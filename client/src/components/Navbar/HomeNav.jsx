@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../../style.css"; // Adjust the path as needed
 
-const HomeNav = () => {
+const HomeNav = ({ cartItemCount }) => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">Online Food Menu</div>
@@ -17,7 +17,15 @@ const HomeNav = () => {
           <Link to="/order">Order</Link>
         </li>
         <li>
-          <Link to="/Adminlogin">Admin</Link>
+          <Link to="/AdminLogin">Admin</Link>
+        </li>
+        <li>
+          <Link to="/cart" className="cart-icon">
+            🛒{" "}
+            {cartItemCount > 0 && (
+              <span className="cart-count">{cartItemCount}</span>
+            )}
+          </Link>
         </li>
       </ul>
     </nav>

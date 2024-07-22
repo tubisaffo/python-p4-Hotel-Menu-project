@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import "../index.css";
-import Navbar from "../components/Navbar/A";
+import Navbar from "../components/Navbar/NavBar";
 
 const MenuTable = ({ updateMenuItems }) => {
   const [menuItems, setMenuItems] = useState([]);

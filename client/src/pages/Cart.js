@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../style.css";
 import NavBar from "../components/Navbar/HomeNav";
+import "../style.css";
 
 const Cart = () => {
   const [chosenItems, setChosenItems] = useState([]);
@@ -31,11 +31,15 @@ const Cart = () => {
         body: JSON.stringify({ items: chosenItems }),
       });
 
+      console.log("Response Status:", response.status);
+      console.log("Response Body:", await response.text()); // Log the response body
+
       if (response.ok) {
+        const orderDetails = await response.json(); // Assuming the API returns order details
         setChosenItems([]);
         localStorage.removeItem("cartItems");
         alert("Order placed successfully!");
-        navigate("/orders");
+        navigate(`/orders/${orderDetails.orderId}`); // Navigate to OrdersPage with orderId
       } else {
         throw new Error("Failed to place order");
       }
