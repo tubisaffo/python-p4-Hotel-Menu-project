@@ -18,7 +18,7 @@ function App() {
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/menu-list" element={<MenuList />} />
-        <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/order" element={<OrdersPage />} />
       </Routes>
     </Router>
   );

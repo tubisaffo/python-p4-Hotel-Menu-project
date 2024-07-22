@@ -83,95 +83,60 @@ def handle_menu_item(id):
         db.session.delete(menu_item)
         db.session.commit()
         return jsonify({"message": "Menu item deleted successfully"})
-@app.route('/api/orders', methods=['GET'])
+@app.route('/orders', methods=['GET'])
 def get_orders():
-    try:
-        orders = Order.query.all()
-        orders_list = [order.to_dict() for order in orders]
-        return jsonify(orders_list), 200
-    except Exception as e:
-        app.logger.error(f"Error fetching orders: {e}")
-        return jsonify({"error": "Failed to fetch orders"}), 500
+    orders = Order.query.all()
+    orders_list = []
+    for order in orders:
+        items = [order_item.to_dict() for order_item in order.items]  # Convert to dict
+        orders_list.append({
+            'id': order.id,
+            'status': order.status,
+            'items': items,
+        })
+    return jsonify(orders_list)
 
-# Route to get a specific order by ID
-@app.route('/api/orders/<int:id>', methods=['GET'])
-def get_order(id):
-    try:
-        order = Order.query.get(id)
-        if not order:
-            return jsonify({"error": "Order not found"}), 404
-
-        order_data = order.to_dict()
-        order_data['order_items'] = [
-            {
-                'menuitem_id': item.menu_item_id,
-                'name': item.menu_item.name,
-                'price': item.menu_item.price,
-                'quantity': item.quantity
-            } for item in order.order_items
-        ]
-        return jsonify(order_data), 200
-    except Exception as e:
-        app.logger.error(f"Error fetching order: {e}")
-        return jsonify({"error": "Failed to fetch order"}), 500
-
-
-# Route to create a new order
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-@app.route('/orders', methods=['POST'])
-def place_order():
-    try:
-        data = request.json
-        # Process the order
-        # Example: save to database, etc.
-        
-        order_id = "12345"  # Example order ID
-        return jsonify({"orderId": order_id}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-# Route to update a specific order by ID
-@app.route('/api/orders/<int:id>', methods=['PUT'])
-def update_order(id):
+@app.route('/api/orders', methods=['POST'])
+def create_order():
     try:
         data = request.get_json()
-        order = Order.query.get(id)
-        if not order:
-            raise NotFound("Order not found")
+        user_id = data.get('user_id')
+        order_items = data.get('order_items')
 
-        order.status = data.get('status', order.status)
+        if not user_id or not order_items:
+            return jsonify({"error": "Missing user_id or order_items"}), 400
+
+        order = Order(user_id=user_id, order_date=datetime.utcnow(), status='Pending')
+        db.session.add(order)
         db.session.commit()
-        return jsonify(order.to_dict()), 200
 
-    except NotFound as e:
-        return jsonify({"error": str(e)}), 404
-    except Exception as e:
-        app.logger.error(f"Error updating order: {e}")
-        return jsonify({"error": "Failed to update order"}), 500
+        for item in order_items:
+            menu_item_id = item.get('menuitem_id')
+            quantity = item.get('quantity')
 
-# Route to delete a specific order by ID
-@app.route('/api/orders/<int:id>', methods=['DELETE'])
-def delete_order(id):
-    try:
-        order = Order.query.get(id)
-        if not order:
-            raise NotFound("Order not found")
+            if not menu_item_id or not quantity:
+                return jsonify({"error": "Missing menuitem_id or quantity"}), 400
 
-        db.session.delete(order)
+            menu_item = MenuItem.query.get(menu_item_id)
+            if not menu_item:
+                return jsonify({"error": "Menu item not found"}), 404
+
+            order_item = OrderItem(
+                order_id=order.id,
+                menu_item_id=menu_item_id,
+                quantity=quantity,
+                menuitem_name=menu_item.name,
+                menuitem_price=menu_item.price,
+                menu_item_image=menu_item.image
+            )
+            db.session.add(order_item)
+
         db.session.commit()
-        return jsonify({"message": "Order deleted successfully"}), 200
-
-    except NotFound as e:
-        return jsonify({"error": str(e)}), 404
+        return jsonify({"orderId": order.id}), 201
     except Exception as e:
-        app.logger.error(f"Error deleting order: {e}")
-        return jsonify({"error": "Failed to delete order"}), 500
-    
+        db.session.rollback()
+        print(f"Error creating order: {e}")  # More detailed error logging
+        return jsonify({"error": "Failed to create order"}), 500
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

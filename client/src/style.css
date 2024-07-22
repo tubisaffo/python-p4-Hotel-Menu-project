@@ -596,3 +596,112 @@ img {
   color: #888;
   font-style: italic;
 }
+
+/* Add styling for quantity buttons */
+.quantity-btn {
+  border: none;
+  background: transparent;
+  font-size: 1.5em;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.remove-btn {
+  border: none;
+  background: transparent;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: red;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-table img.cart-food-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.place-order-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.place-order-btn:hover {
+  background-color: #45a049;
+}
+
+/* src/style.css */
+.order-details-container {
+  padding: 20px;
+}
+
+.order-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.order-status {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.order-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-item-card {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.order-food-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.order-item-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-item-details h4 {
+  margin: 0;
+}
+
+.order-item-details p {
+  margin: 5px 0;
+}
+.orders-container {
+  padding: 20px;
+}
+
+.orders-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  border: 1px solid #ddd;
+  padding:20px;
+}
+
