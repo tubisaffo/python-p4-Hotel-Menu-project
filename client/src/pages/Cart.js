@@ -5,7 +5,7 @@ import "../style.css";
 
 const Cart = () => {
   const [chosenItems, setChosenItems] = useState([]);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook to navigate programmatically
 
   useEffect(() => {
     const storedItems = localStorage.getItem("cartItems");
@@ -19,51 +19,6 @@ const Cart = () => {
       return 0;
     }
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
-
-  const handlePlaceOrder = async () => {
-    try {
-      const userId = localStorage.getItem("userId") || "defaultUserId";
-
-      const orderItems = chosenItems.map((item) => ({
-        menuitem_id: item.id, // Ensure this matches the expected field name in backend
-        quantity: item.quantity,
-      }));
-
-      const response = await fetch(
-        "https://menu-qdlu.onrender.com/api/orders",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            order_items: orderItems,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          `HTTP error! status: ${response.status}, message: ${errorText}`
-        );
-      }
-
-      const responseBody = await response.json();
-      console.log("Response Status:", response.status);
-      console.log("Response Body:", responseBody);
-
-      setChosenItems([]);
-      localStorage.removeItem("cartItems");
-      localStorage.setItem("orderId", responseBody.orderId);
-      alert("Order placed successfully!");
-      navigate("/orders"); // Navigate to the All Orders page
-    } catch (error) {
-      console.error("Error placing order:", error);
-      alert("Error placing order. Please try again.");
-    }
   };
 
   const handleRemoveItem = (itemId) => {
@@ -170,8 +125,9 @@ const Cart = () => {
             </tfoot>
           )}
         </table>
-        <button className="place-order-btn" onClick={handlePlaceOrder}>
-          Place Order
+        {/* Button to navigate to AllOrdersPage */}
+        <button className="view-orders-btn" onClick={() => navigate("/orders")}>
+          View All Orders
         </button>
       </div>
     </div>
