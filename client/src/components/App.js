@@ -4,8 +4,9 @@ import MainPage from "../pages/MainPage";
 import Cart from "../pages/Cart";
 import MenuList from "../pages/MenuList";
 import HomePage from "../pages/HomePage";
+import AdminLogin from "../pages/Adminlogin";
 import MenuTable from "../pages/MenuTable";
-import OrdersPage from '../pages/OrdersPage'; 
+import OrdersPage from "../pages/OrdersPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/menu-table" element={<MenuTable />} />
         <Route path="/main-page" element={<MainPage />} />
+        <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/menu-list" element={<MenuList />} />
         <Route path="/orders" element={<OrdersPage />} />

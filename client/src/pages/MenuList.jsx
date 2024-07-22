@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../style.css";
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar/A";
 
 const MenuList = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -22,41 +22,41 @@ const MenuList = () => {
 
   return (
     <div>
-    <Navbar />
-    <div className="menu-list">
-      <h1 className="menu-header">Menu List</h1>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Image</th>
-          </tr>
-        </thead>
-        <tbody>
-          {menuItems.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.name}</td>
-              <td>${item.price.toFixed(2)}</td>
-              <td>{item.description}</td>
-              <td>
-                {item.image && (
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    style={{ maxWidth: "100px" }}
-                  />
-                )}
-              </td>
+      <Navbar />
+      <div className="menu-list">
+        <h1 className="menu-header">Menu List</h1>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Description</th>
+              <th>Image</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {menuItems.map((item) => (
+              <tr key={item.id}>
+                <td>{item.id}</td>
+                <td>{item.name}</td>
+                <td>${item.price.toFixed(2)}</td>
+                <td>{item.description}</td>
+                <td>
+                  {item.image && (
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      style={{ maxWidth: "100px" }}
+                    />
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
   );
 };
 

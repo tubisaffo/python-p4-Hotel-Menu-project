@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import NavBar from '../components/navbar';
-import "../style.css"; 
+import NavBar from "../components/Navbar/HomeNav";
+import "../style.css";
 
 const Main = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -10,7 +10,7 @@ const Main = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch("/menu");
+        const response = await fetch("https://menu-qdlu.onrender.com/menu");
         if (!response.ok) {
           throw new Error("Failed to fetch menu items");
         }
@@ -45,11 +45,6 @@ const Main = () => {
     setSearchQuery(event.target.value);
   };
 
-  const totalItemsInCart = chosenItems.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
-
   return (
     <div>
       <NavBar />
@@ -75,7 +70,12 @@ const Main = () => {
                 <h3>{item.name}</h3>
                 <p>{item.description}</p>
                 <p className="price">Price: ${item.price.toFixed(2)}</p>
-                <button onClick={() => addToCart(item)} className="add-to-cart-button">Add to Cart</button>
+                <button
+                  onClick={() => addToCart(item)}
+                  className="add-to-cart-button"
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           ))}

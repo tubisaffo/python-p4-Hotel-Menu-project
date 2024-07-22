@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "../components/navbar";
+import NavBar from "../components/Navbar/HomeNav";
 import "../style.css";
 
 const OrdersPage = () => {

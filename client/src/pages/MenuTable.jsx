@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import "../index.css";
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar/A";
 
 const MenuTable = ({ updateMenuItems }) => {
   const [menuItems, setMenuItems] = useState([]);
   const [editItem, setEditItem] = useState(null);
 
   useEffect(() => {
-    fetch("/menu")
+    fetch("https://menu-qdlu.onrender.com/menu")
       .then((response) => response.json())
       .then((data) => {
         console.log("Fetched menu items:", data); // Log fetched data
