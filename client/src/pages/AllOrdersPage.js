@@ -46,7 +46,6 @@ const AllOrdersPage = () => {
             <th>Order ID</th>
             <th>Order Date</th>
             <th>Status</th>
-            <th>Details</th>
           </tr>
         </thead>
         <tbody>
@@ -55,11 +54,6 @@ const AllOrdersPage = () => {
               <td>{order.id}</td>
               <td>{new Date(order.order_date).toLocaleString()}</td>
               <td>{order.status}</td>
-              <td>
-                <a href={`/orders/${order.id}`} className="view-details-link">
-                  View Details
-                </a>
-              </td>
             </tr>
           ))}
         </tbody>
@@ -69,6 +63,7 @@ const AllOrdersPage = () => {
 };
 
 export default AllOrdersPage;
+
 
 
 
