@@ -59,7 +59,7 @@ const Cart = () => {
       localStorage.removeItem("cartItems");
       localStorage.setItem("orderId", responseBody.orderId);
       alert("Order placed successfully!");
-      navigate("/order-table");
+      navigate("/orders"); // Navigate to the All Orders page
     } catch (error) {
       console.error("Error placing order:", error);
       alert("Error placing order. Please try again.");
@@ -179,3 +179,4 @@ const Cart = () => {
 };
 
 export default Cart;
+
