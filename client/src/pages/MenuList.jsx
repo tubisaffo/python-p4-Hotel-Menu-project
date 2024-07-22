@@ -6,7 +6,7 @@ const MenuList = () => {
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    fetch("/menu")
+    fetch("https://menu-qdlu.onrender.com/menu")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch menu items");
