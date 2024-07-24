@@ -9,12 +9,15 @@ const AllOrdersPage = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch("https://menu-qdlu.onrender.com/api/orders", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://menu-qdlu.onrender.com/api/orders",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -36,13 +39,16 @@ const AllOrdersPage = () => {
 
   const handleAddOrder = async (newOrder) => {
     try {
-      const response = await fetch("https://menu-qdlu.onrender.com/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newOrder),
-      });
+      const response = await fetch(
+        "https://menu-qdlu.onrender.com/api/orders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newOrder),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -63,7 +69,8 @@ const AllOrdersPage = () => {
 
   return (
     <div className="all-orders-page">
-      <HomeNav cartItemCount={0} /> {/* Include HomeNav with appropriate props */}
+      <HomeNav cartItemCount={0} />{" "}
+      {/* Include HomeNav with appropriate props */}
       <h3>All Orders</h3>
       <table className="orders-table">
         <thead>
@@ -75,7 +82,7 @@ const AllOrdersPage = () => {
         </thead>
         <tbody>
           {orders.length > 0 ? (
-            orders.map(order => (
+            orders.map((order) => (
               <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>{new Date(order.order_date).toLocaleString()}</td>
@@ -94,8 +101,3 @@ const AllOrdersPage = () => {
 };
 
 export default AllOrdersPage;
-
-
-
-
-
